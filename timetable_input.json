@@ -4,6 +4,7 @@
     "strategy": "dfs",
     "use_mrv": true
   },
+
   "timeslots": [
     { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
     { "id": "Mon_10-1230", "day": "Mon", "start": "10:30", "end": "12:30", "duration_min": 120 },
@@ -12,21 +13,78 @@
     { "id": "Tue_10-1230", "day": "Tue", "start": "10:30", "end": "12:30", "duration_min": 120 },
     { "id": "Tue_14-16", "day": "Tue", "start": "14:00", "end": "16:00", "duration_min": 120 }
   ],
-  "groups": [
-    { "id": "G1", "size": 30, "available": ["Mon_08-10", "Mon_10-1230", "Mon_14-16", "Tue_08-10", "Tue_10-1230", "Tue_14-16"] },
-    { "id": "G2", "size": 25, "available": ["Mon_08-10", "Mon_10-1230", "Mon_14-16", "Tue_08-10", "Tue_10-1230", "Tue_14-16"] }
-  ],
+
   "rooms": [
-    { "id": "R1", "capacity": 30, "available": ["Mon_08-10", "Mon_10-1230", "Mon_14-16", "Tue_08-10", "Tue_10-1230", "Tue_14-16"] },
-    { "id": "R2", "capacity": 60, "available": ["Mon_08-10", "Mon_10-1230", "Mon_14-16", "Tue_08-10", "Tue_10-1230", "Tue_14-16"] }
+    {
+      "id": "R1",
+      "capacity": 30,
+      "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"]
+    },
+    {
+      "id": "R2",
+      "capacity": 80,
+      "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"]
+    }
   ],
+
   "teachers": [
-    { "id": "T1", "available": ["Mon_08-10", "Mon_10-1230", "Tue_08-10", "Tue_10-1230"] },
-    { "id": "T2", "available": ["Mon_14-16", "Tue_14-16", "Tue_10-1230"] }
+    {
+      "id": "T_MATH",
+      "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"]
+    },
+    {
+      "id": "T_ALGO",
+      "available": ["Mon_14-16","Tue_14-16","Tue_10-1230"]
+    }
   ],
-  "events": [
-    { "id": "CM_Math", "teacher_id": "T1", "group_ids": ["G1", "G2"], "duration_min": 120 },
-    { "id": "TD_Math_G1", "teacher_id": "T1", "group_ids": ["G1"], "duration_min": 120 },
-    { "id": "TD_Math_G2", "teacher_id": "T2", "group_ids": ["G2"], "duration_min": 120 }
+
+  "sessions": [
+    {
+      "id": "CP-1-S1",
+      "groups": [
+        {
+          "id": "CP-1-S1_G1",
+          "size": 28,
+          "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"]
+        },
+        {
+          "id": "CP-1-S1_G2",
+          "size": 27,
+          "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "MATH1",
+          "min_room_capacity": 60,
+          "events": [
+            {
+              "id": "CP-1-S1_CM_MATH1",
+              "teacher_id": "T_MATH",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120
+            }
+          ]
+        },
+        {
+          "id": "ALGO1",
+          "min_room_capacity": 30,
+          "events": [
+            {
+              "id": "CP-1-S1_TD_ALGO1_G1",
+              "teacher_id": "T_ALGO",
+              "audience": { "type": "groups", "group_ids": ["CP-1-S1_G1"] },
+              "duration_min": 120
+            },
+            {
+              "id": "CP-1-S1_TD_ALGO1_G2",
+              "teacher_id": "T_ALGO",
+              "audience": { "type": "groups", "group_ids": ["CP-1-S1_G2"] },
+              "duration_min": 120
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -1,6 +1,17 @@
 """
 Timetabling agent (feasible schedule) WITHOUT modifying problem_solving_agent.py.
-Includes CLI-like run: read input JSON, solve, print, export output JSON.
+
+- Reads an input JSON (v2) via timetable_io.py
+- Solves with DFS/BFS/UCS/A*
+- Prints schedule to STDOUT
+- Exports result JSON via timetable_io.py
+
+Hard constraints:
+- teacher availability + no teacher conflict
+- group availability + no group conflict (multi-group supported)
+- room availability + no room conflict
+- room capacity >= max(sum(group sizes), module min_room_capacity)
+- timeslot duration == event duration
 """
 
 from __future__ import annotations
@@ -12,6 +23,10 @@ import heapq
 
 from problem_solving_agent import Problem
 
+
+# ==========================================================
+# Data model
+# ==========================================================
 
 @dataclass(frozen=True)
 class TimeSlot:
@@ -50,9 +65,19 @@ class Event:
     duration_min: int
     allowed_slots: Optional[FrozenSet[str]] = None
 
+    # From module/session structure (input v2)
+    min_room_capacity: int = 0          # interpreted as "minimum room capacity required"
+    session_id: str = ""
+    module_id: str = ""
 
+
+# (event_id, timeslot_id, room_id) ... sorted by event_id to keep canonical/hashing stable
 AssignmentTuple = Tuple[Tuple[str, str, str], ...]
 
+
+# ==========================================================
+# Helpers
+# ==========================================================
 
 def event_demand(e: Event, groups: Dict[str, Group]) -> int:
     return sum(groups[gid].size for gid in e.group_ids)
@@ -76,7 +101,15 @@ def is_group_free(assignment: AssignmentTuple, events: Dict[str, Event], t_id: s
     return True
 
 
+# ==========================================================
+# Problem definition
+# ==========================================================
+
 class TimetablingProblem(Problem):
+    """
+    Feasible scheduling problem with hard constraints only.
+    """
+
     def __init__(
         self,
         initial_state: AssignmentTuple,
@@ -107,11 +140,14 @@ class TimetablingProblem(Problem):
 
         self.all_event_ids: Tuple[str, ...] = tuple(e.id for e in events)
 
+        # Precompute compatible rooms per event: capacity >= max(demand, min_room_capacity)
         self.compatible_rooms: Dict[str, Tuple[str, ...]] = {}
         for e in events:
             dem = event_demand(e, self.groups)
-            self.compatible_rooms[e.id] = tuple(r.id for r in rooms if r.capacity >= dem)
+            required = max(dem, int(getattr(e, "min_room_capacity", 0)))
+            self.compatible_rooms[e.id] = tuple(r.id for r in rooms if r.capacity >= required)
 
+        # Precompute compatible slots per event: duration + teacher+groups availability (+ allowed_slots)
         self.compatible_slots: Dict[str, Tuple[str, ...]] = {}
         all_slot_ids = set(self.timeslots.keys())
 
@@ -137,9 +173,11 @@ class TimetablingProblem(Problem):
         unassigned = self._unassigned(state)
         if not unassigned:
             return None
+
         if not self.use_mrv:
             return unassigned[0]
 
+        # MRV: smallest estimated domain size slots*rooms
         best_eid = None
         best_size = None
         for eid in unassigned:
@@ -149,6 +187,10 @@ class TimetablingProblem(Problem):
         return best_eid
 
     def actions(self, state: AssignmentTuple) -> List[Tuple[str, str, str]]:
+        """
+        Actions are (event_id, timeslot_id, room_id).
+        To reduce branching, generate actions only for the next event (MRV).
+        """
         eid = self._select_next_event(state)
         if eid is None:
             return []
@@ -157,17 +199,26 @@ class TimetablingProblem(Problem):
         acts: List[Tuple[str, str, str]] = []
 
         for t_id in self.compatible_slots[eid]:
+            # teacher conflict
             if not is_teacher_free(state, self.events, t_id, e.teacher_id):
                 continue
+
+            # group conflicts
             if any(not is_group_free(state, self.events, t_id, gid) for gid in e.group_ids):
                 continue
 
+            # room choices
             for r_id in self.compatible_rooms[eid]:
                 room = self.rooms[r_id]
+
+                # room availability
                 if t_id not in room.available:
                     continue
+
+                # room conflict
                 if not is_room_free(state, t_id, r_id):
                     continue
+
                 acts.append((eid, t_id, r_id))
 
         return acts
@@ -175,15 +226,20 @@ class TimetablingProblem(Problem):
     def result(self, state: AssignmentTuple, action: Tuple[str, str, str]) -> AssignmentTuple:
         eid, t_id, r_id = action
         new_state = list(state) + [(eid, t_id, r_id)]
-        new_state.sort(key=lambda x: x[0])
+        new_state.sort(key=lambda x: x[0])  # canonical
         return tuple(new_state)
 
     def goal_test(self, state: AssignmentTuple) -> bool:
         return len(state) == len(self.all_event_ids)
 
     def path_cost(self, cost_so_far: float, state1: Any, action: Any, state2: Any) -> float:
+        # uniform step cost (feasible only)
         return cost_so_far + 1.0
 
+
+# ==========================================================
+# Search algorithms (no Trace dependency)
+# ==========================================================
 
 def reconstruct_path(parents: Dict[Any, Any], start: Any, goal: Any) -> List[Any]:
     path = [goal]
@@ -295,6 +351,10 @@ def a_star_search(problem: TimetablingProblem, h=h_zero) -> Optional[List[Any]]:
     return None
 
 
+# ==========================================================
+# Output formatting
+# ==========================================================
+
 def pretty_print_schedule(problem: TimetablingProblem, assignment: AssignmentTuple):
     print("\n================= SCHEDULE =================")
 
@@ -308,13 +368,27 @@ def pretty_print_schedule(problem: TimetablingProblem, assignment: AssignmentTup
         ts = problem.timeslots[tid]
         dem = event_demand(e, problem.groups)
         cap = problem.rooms[rid].capacity
+        required = max(dem, int(getattr(e, "min_room_capacity", 0)))
+
+        extra = []
+        if e.session_id:
+            extra.append(f"session={e.session_id}")
+        if e.module_id:
+            extra.append(f"module={e.module_id}")
+
+        extra_str = (" | " + " ".join(extra)) if extra else ""
+
         print(
             f"- {ts.day} {ts.start}-{ts.end} | event={eid} | teacher={e.teacher_id} "
-            f"| groups={list(e.group_ids)} | room={rid} | demand={dem}/{cap}"
+            f"| groups={list(e.group_ids)} | room={rid} | required={required}/{cap}{extra_str}"
         )
 
     print("===========================================\n")
 
+
+# ==========================================================
+# Main solve entry (JSON in/out)
+# ==========================================================
 
 def solve_from_json(input_path: str = "timetable_input.json", output_path: str = "timetable_output.json"):
     from timetable_io import load_input_json, export_output_json

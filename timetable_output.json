@@ -9,38 +9,50 @@
   },
   "assignments": [
     {
-      "event_id": "CM_Math",
-      "teacher_id": "T1",
+      "event_id": "CP-1-S1_CM_MATH1",
+      "session_id": "CP-1-S1",
+      "module_id": "MATH1",
+      "teacher_id": "T_MATH",
       "group_ids": [
-        "G1",
-        "G2"
+        "CP-1-S1_G1",
+        "CP-1-S1_G2"
       ],
       "timeslot_id": "Tue_10-1230",
       "room_id": "R2",
       "demand": 55,
-      "room_capacity": 60
+      "min_room_capacity": 60,
+      "required_capacity": 60,
+      "room_capacity": 80
     },
     {
-      "event_id": "TD_Math_G1",
-      "teacher_id": "T1",
+      "event_id": "CP-1-S1_TD_ALGO1_G1",
+      "session_id": "CP-1-S1",
+      "module_id": "ALGO1",
+      "teacher_id": "T_ALGO",
       "group_ids": [
-        "G1"
-      ],
-      "timeslot_id": "Tue_08-10",
-      "room_id": "R2",
-      "demand": 30,
-      "room_capacity": 60
-    },
-    {
-      "event_id": "TD_Math_G2",
-      "teacher_id": "T2",
-      "group_ids": [
-        "G2"
+        "CP-1-S1_G1"
       ],
       "timeslot_id": "Tue_14-16",
       "room_id": "R2",
-      "demand": 25,
-      "room_capacity": 60
+      "demand": 28,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 80
+    },
+    {
+      "event_id": "CP-1-S1_TD_ALGO1_G2",
+      "session_id": "CP-1-S1",
+      "module_id": "ALGO1",
+      "teacher_id": "T_ALGO",
+      "group_ids": [
+        "CP-1-S1_G2"
+      ],
+      "timeslot_id": "Mon_14-16",
+      "room_id": "R2",
+      "demand": 27,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 80
     }
   ]
 }
