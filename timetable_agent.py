@@ -1,17 +1,19 @@
 """
 Timetabling agent (feasible schedule) WITHOUT modifying problem_solving_agent.py.
 
-- Reads an input JSON (v2) via timetable_io.py
-- Solves with DFS/BFS/UCS/A*
-- Prints schedule to STDOUT
-- Exports result JSON via timetable_io.py
+Weeks constraint (flexible):
+- Each Event has a set of active weeks: event.weeks (FrozenSet[int]).
+- A resource conflict (teacher/group/room) occurs only if:
+  same timeslot AND weeks sets intersect.
 
 Hard constraints:
-- teacher availability + no teacher conflict
-- group availability + no group conflict (multi-group supported)
-- room availability + no room conflict
+- teacher availability (weekly pattern) + no teacher conflict (weeks-aware)
+- group availability (weekly pattern) + no group conflict (weeks-aware)
+- room availability (weekly pattern) + no room conflict (weeks-aware)
 - room capacity >= max(sum(group sizes), module min_room_capacity)
 - timeslot duration == event duration
+
+Input/Output handled by timetable_io.py (JSON v3 with weeks as list/ranges/all).
 """
 
 from __future__ import annotations
@@ -41,20 +43,20 @@ class TimeSlot:
 class Group:
     id: str
     size: int
-    available: FrozenSet[str]
+    available: FrozenSet[str]  # timeslot ids (weekly pattern)
 
 
 @dataclass(frozen=True)
 class Room:
     id: str
     capacity: int
-    available: FrozenSet[str]
+    available: FrozenSet[str]  # timeslot ids (weekly pattern)
 
 
 @dataclass(frozen=True)
 class Teacher:
     id: str
-    available: FrozenSet[str]
+    available: FrozenSet[str]  # timeslot ids (weekly pattern)
 
 
 @dataclass(frozen=True)
@@ -65,14 +67,26 @@ class Event:
     duration_min: int
     allowed_slots: Optional[FrozenSet[str]] = None
 
-    # From module/session structure (input v2)
-    min_room_capacity: int = 0          # interpreted as "minimum room capacity required"
+    # From module/session structure (input JSON)
+    min_room_capacity: int = 0
     session_id: str = ""
     module_id: str = ""
 
+    # Active weeks for this event (e.g., {1,3,5} or weeks from ranges)
+    weeks: FrozenSet[int] = frozenset()
 
-# (event_id, timeslot_id, room_id) ... sorted by event_id to keep canonical/hashing stable
+
+# State: tuple of assignments (event_id, timeslot_id, room_id) sorted by event_id
 AssignmentTuple = Tuple[Tuple[str, str, str], ...]
+
+
+# ==========================================================
+# Weeks logic
+# ==========================================================
+
+def weeks_intersect(a: FrozenSet[int], b: FrozenSet[int]) -> bool:
+    """True if week sets intersect."""
+    return not a.isdisjoint(b)
 
 
 # ==========================================================
@@ -83,20 +97,54 @@ def event_demand(e: Event, groups: Dict[str, Group]) -> int:
     return sum(groups[gid].size for gid in e.group_ids)
 
 
-def is_room_free(assignment: AssignmentTuple, t_id: str, r_id: str) -> bool:
-    return all(not (t == t_id and r == r_id) for (_, t, r) in assignment)
-
-
-def is_teacher_free(assignment: AssignmentTuple, events: Dict[str, Event], t_id: str, teacher_id: str) -> bool:
-    for (eid, t, _) in assignment:
-        if t == t_id and events[eid].teacher_id == teacher_id:
+def is_room_free(
+    assignment: AssignmentTuple,
+    events: Dict[str, Event],
+    t_id: str,
+    r_id: str,
+    candidate: Event,
+) -> bool:
+    for (eid, t, r) in assignment:
+        if t != t_id or r != r_id:
+            continue
+        existing = events[eid]
+        if weeks_intersect(existing.weeks, candidate.weeks):
             return False
     return True
 
 
-def is_group_free(assignment: AssignmentTuple, events: Dict[str, Event], t_id: str, group_id: str) -> bool:
+def is_teacher_free(
+    assignment: AssignmentTuple,
+    events: Dict[str, Event],
+    t_id: str,
+    teacher_id: str,
+    candidate: Event,
+) -> bool:
     for (eid, t, _) in assignment:
-        if t == t_id and group_id in events[eid].group_ids:
+        if t != t_id:
+            continue
+        existing = events[eid]
+        if existing.teacher_id != teacher_id:
+            continue
+        if weeks_intersect(existing.weeks, candidate.weeks):
+            return False
+    return True
+
+
+def is_group_free(
+    assignment: AssignmentTuple,
+    events: Dict[str, Event],
+    t_id: str,
+    group_id: str,
+    candidate: Event,
+) -> bool:
+    for (eid, t, _) in assignment:
+        if t != t_id:
+            continue
+        existing = events[eid]
+        if group_id not in existing.group_ids:
+            continue
+        if weeks_intersect(existing.weeks, candidate.weeks):
             return False
     return True
 
@@ -107,7 +155,7 @@ def is_group_free(assignment: AssignmentTuple, events: Dict[str, Event], t_id: s
 
 class TimetablingProblem(Problem):
     """
-    Feasible scheduling problem with hard constraints only.
+    Feasible scheduling problem with hard constraints only, using week-sets.
     """
 
     def __init__(
@@ -140,14 +188,16 @@ class TimetablingProblem(Problem):
 
         self.all_event_ids: Tuple[str, ...] = tuple(e.id for e in events)
 
-        # Precompute compatible rooms per event: capacity >= max(demand, min_room_capacity)
+        # Precompute compatible rooms per event:
+        # room.capacity >= max(demand, min_room_capacity)
         self.compatible_rooms: Dict[str, Tuple[str, ...]] = {}
         for e in events:
             dem = event_demand(e, self.groups)
             required = max(dem, int(getattr(e, "min_room_capacity", 0)))
             self.compatible_rooms[e.id] = tuple(r.id for r in rooms if r.capacity >= required)
 
-        # Precompute compatible slots per event: duration + teacher+groups availability (+ allowed_slots)
+        # Precompute compatible slots per event:
+        # duration + teacher availability + all groups availability (+ allowed_slots)
         self.compatible_slots: Dict[str, Tuple[str, ...]] = {}
         all_slot_ids = set(self.timeslots.keys())
 
@@ -189,7 +239,7 @@ class TimetablingProblem(Problem):
     def actions(self, state: AssignmentTuple) -> List[Tuple[str, str, str]]:
         """
         Actions are (event_id, timeslot_id, room_id).
-        To reduce branching, generate actions only for the next event (MRV).
+        We generate actions only for the next event (MRV) to keep branching manageable.
         """
         eid = self._select_next_event(state)
         if eid is None:
@@ -199,24 +249,23 @@ class TimetablingProblem(Problem):
         acts: List[Tuple[str, str, str]] = []
 
         for t_id in self.compatible_slots[eid]:
-            # teacher conflict
-            if not is_teacher_free(state, self.events, t_id, e.teacher_id):
+            # teacher conflict (weeks-aware)
+            if not is_teacher_free(state, self.events, t_id, e.teacher_id, e):
                 continue
 
-            # group conflicts
-            if any(not is_group_free(state, self.events, t_id, gid) for gid in e.group_ids):
+            # group conflicts (weeks-aware)
+            if any(not is_group_free(state, self.events, t_id, gid, e) for gid in e.group_ids):
                 continue
 
-            # room choices
             for r_id in self.compatible_rooms[eid]:
                 room = self.rooms[r_id]
 
-                # room availability
+                # room availability (weekly pattern)
                 if t_id not in room.available:
                     continue
 
-                # room conflict
-                if not is_room_free(state, t_id, r_id):
+                # room conflict (weeks-aware)
+                if not is_room_free(state, self.events, t_id, r_id, e):
                     continue
 
                 acts.append((eid, t_id, r_id))
@@ -233,7 +282,6 @@ class TimetablingProblem(Problem):
         return len(state) == len(self.all_event_ids)
 
     def path_cost(self, cost_so_far: float, state1: Any, action: Any, state2: Any) -> float:
-        # uniform step cost (feasible only)
         return cost_so_far + 1.0
 
 
@@ -355,6 +403,23 @@ def a_star_search(problem: TimetablingProblem, h=h_zero) -> Optional[List[Any]]:
 # Output formatting
 # ==========================================================
 
+def _weeks_to_ranges(weeks: FrozenSet[int]) -> str:
+    """Compact printing: 1,3,5,7,10,16 or 1-6,10-14 style."""
+    if not weeks:
+        return ""
+    w = sorted(weeks)
+    ranges = []
+    start = prev = w[0]
+    for x in w[1:]:
+        if x == prev + 1:
+            prev = x
+            continue
+        ranges.append((start, prev))
+        start = prev = x
+    ranges.append((start, prev))
+    return ",".join([f"{a}-{b}" if a != b else f"{a}" for a, b in ranges])
+
+
 def pretty_print_schedule(problem: TimetablingProblem, assignment: AssignmentTuple):
     print("\n================= SCHEDULE =================")
 
@@ -370,17 +435,10 @@ def pretty_print_schedule(problem: TimetablingProblem, assignment: AssignmentTup
         cap = problem.rooms[rid].capacity
         required = max(dem, int(getattr(e, "min_room_capacity", 0)))
 
-        extra = []
-        if e.session_id:
-            extra.append(f"session={e.session_id}")
-        if e.module_id:
-            extra.append(f"module={e.module_id}")
-
-        extra_str = (" | " + " ".join(extra)) if extra else ""
-
         print(
             f"- {ts.day} {ts.start}-{ts.end} | event={eid} | teacher={e.teacher_id} "
-            f"| groups={list(e.group_ids)} | room={rid} | required={required}/{cap}{extra_str}"
+            f"| groups={list(e.group_ids)} | room={rid} | required={required}/{cap} "
+            f"| weeks={_weeks_to_ranges(e.weeks)} | session={e.session_id} module={e.module_id}"
         )
 
     print("===========================================\n")
