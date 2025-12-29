@@ -289,6 +289,20 @@ class TimetablingProblem(Problem):
 # Search algorithms (no Trace dependency)
 # ==========================================================
 
+import time
+
+@dataclass
+class SearchResult:
+    """Result of a search algorithm with statistics."""
+    path: Optional[List[Any]]
+    iterations: int
+    nodes_explored: int
+    max_frontier_size: int
+    final_cost: float
+    elapsed_time: float
+    algorithm: str
+
+
 def reconstruct_path(parents: Dict[Any, Any], start: Any, goal: Any) -> List[Any]:
     path = [goal]
     cur = goal
@@ -299,16 +313,61 @@ def reconstruct_path(parents: Dict[Any, Any], start: Any, goal: Any) -> List[Any
     return path
 
 
-def dfs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
+def state_repr(state: AssignmentTuple, max_items: int = 3) -> str:
+    """Compact representation of state for console output."""
+    if len(state) == 0:
+        return "(empty)"
+    if len(state) <= max_items:
+        return str(list(state))
+    return f"[{len(state)} assignments: {list(state[:max_items])}...]"
+
+
+def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
+    algo_name = "DFS"
+    start_time = time.time()
     start = problem.initial_state
     frontier = [start]
     parents: Dict[Any, Any] = {}
     visited = set()
+    iteration = 0
+    max_frontier = 1
+
+    if verbose:
+        print(f"\n{'='*60}")
+        print(f"  ALGORITHME: {algo_name}")
+        print(f"{'='*60}")
+        print(f"État initial: {state_repr(start)}")
+        print(f"Frontière initiale: taille={len(frontier)}")
+        print(f"Explorés: 0 | Coût initial: 0.0")
+        print("-" * 60)
 
     while frontier:
+        iteration += 1
+        max_frontier = max(max_frontier, len(frontier))
         state = frontier.pop()
+
+        if verbose and iteration <= 10:
+            print(f"Itération {iteration}:")
+            print(f"  État courant: {state_repr(state)}")
+            print(f"  Frontière: {len(frontier)} états")
+            print(f"  Explorés: {len(visited)}")
+            print(f"  Coût: {len(state)}")
+
         if problem.goal_test(state):
-            return reconstruct_path(parents, start, state)
+            elapsed = time.time() - start_time
+            path = reconstruct_path(parents, start, state)
+            if verbose:
+                print(f"\n✅ SOLUTION TROUVÉE à l'itération {iteration}")
+                print(f"  Coût final: {len(state)}")
+            return SearchResult(
+                path=path,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float(len(state)),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
 
         if state in visited:
             continue
@@ -320,19 +379,72 @@ def dfs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
                 parents[child] = state
                 frontier.append(child)
 
-    return None
+        if verbose and iteration <= 10:
+            print(f"  Actions possibles: {len(problem.actions(state))}")
+            print("-" * 60)
+        elif verbose and iteration == 11:
+            print("... (affichage des itérations suivantes omis)")
+
+    elapsed = time.time() - start_time
+    if verbose:
+        print(f"\n❌ Aucune solution trouvée après {iteration} itérations")
+    return SearchResult(
+        path=None,
+        iterations=iteration,
+        nodes_explored=len(visited),
+        max_frontier_size=max_frontier,
+        final_cost=float('inf'),
+        elapsed_time=elapsed,
+        algorithm=algo_name
+    )
 
 
-def bfs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
+def bfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
+    algo_name = "BFS"
+    start_time = time.time()
     start = problem.initial_state
     frontier = deque([start])
     parents: Dict[Any, Any] = {}
     visited = set([start])
+    iteration = 0
+    max_frontier = 1
+
+    if verbose:
+        print(f"\n{'='*60}")
+        print(f"  ALGORITHME: {algo_name}")
+        print(f"{'='*60}")
+        print(f"État initial: {state_repr(start)}")
+        print(f"Frontière initiale: taille={len(frontier)}")
+        print(f"Explorés: 1 | Coût initial: 0.0")
+        print("-" * 60)
 
     while frontier:
+        iteration += 1
+        max_frontier = max(max_frontier, len(frontier))
         state = frontier.popleft()
+
+        if verbose and iteration <= 10:
+            print(f"Itération {iteration}:")
+            print(f"  État courant: {state_repr(state)}")
+            print(f"  Frontière: {len(frontier)} états")
+            print(f"  Explorés: {len(visited)}")
+            print(f"  Coût: {len(state)}")
+
         if problem.goal_test(state):
-            return reconstruct_path(parents, start, state)
+            elapsed = time.time() - start_time
+            path = reconstruct_path(parents, start, state)
+            if verbose:
+                print(f"\n✅ SOLUTION TROUVÉE à l'itération {iteration}")
+                print(f"  Coût final: {len(state)}")
+            return SearchResult(
+                path=path,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float(len(state)),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
 
         for action in problem.actions(state):
             child = problem.result(state, action)
@@ -341,22 +453,78 @@ def bfs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
                 parents[child] = state
                 frontier.append(child)
 
-    return None
+        if verbose and iteration <= 10:
+            print(f"  Actions possibles: {len(problem.actions(state))}")
+            print("-" * 60)
+        elif verbose and iteration == 11:
+            print("... (affichage des itérations suivantes omis)")
+
+    elapsed = time.time() - start_time
+    if verbose:
+        print(f"\n❌ Aucune solution trouvée après {iteration} itérations")
+    return SearchResult(
+        path=None,
+        iterations=iteration,
+        nodes_explored=len(visited),
+        max_frontier_size=max_frontier,
+        final_cost=float('inf'),
+        elapsed_time=elapsed,
+        algorithm=algo_name
+    )
 
 
-def ucs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
+def ucs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
+    algo_name = "UCS"
+    start_time = time.time()
     start = problem.initial_state
     frontier: List[Tuple[float, Any]] = [(0.0, start)]
     parents: Dict[Any, Any] = {}
     best_g: Dict[Any, float] = {start: 0.0}
+    iteration = 0
+    max_frontier = 1
+    explored_count = 0
+
+    if verbose:
+        print(f"\n{'='*60}")
+        print(f"  ALGORITHME: {algo_name}")
+        print(f"{'='*60}")
+        print(f"État initial: {state_repr(start)}")
+        print(f"Frontière initiale: taille={len(frontier)}")
+        print(f"Explorés: 0 | Coût initial: 0.0")
+        print("-" * 60)
 
     while frontier:
+        iteration += 1
+        max_frontier = max(max_frontier, len(frontier))
         g, state = heapq.heappop(frontier)
+
         if g != best_g.get(state, float("inf")):
             continue
 
+        explored_count += 1
+
+        if verbose and iteration <= 10:
+            print(f"Itération {iteration}:")
+            print(f"  État courant: {state_repr(state)}")
+            print(f"  Frontière: {len(frontier)} états")
+            print(f"  Explorés: {explored_count}")
+            print(f"  Coût g(n): {g}")
+
         if problem.goal_test(state):
-            return reconstruct_path(parents, start, state)
+            elapsed = time.time() - start_time
+            path = reconstruct_path(parents, start, state)
+            if verbose:
+                print(f"\n✅ SOLUTION TROUVÉE à l'itération {iteration}")
+                print(f"  Coût final: {g}")
+            return SearchResult(
+                path=path,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=g,
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
 
         for action in problem.actions(state):
             child = problem.result(state, action)
@@ -366,27 +534,83 @@ def ucs_search(problem: TimetablingProblem) -> Optional[List[Any]]:
                 parents[child] = state
                 heapq.heappush(frontier, (new_g, child))
 
-    return None
+        if verbose and iteration <= 10:
+            print(f"  Actions possibles: {len(problem.actions(state))}")
+            print("-" * 60)
+        elif verbose and iteration == 11:
+            print("... (affichage des itérations suivantes omis)")
+
+    elapsed = time.time() - start_time
+    if verbose:
+        print(f"\n❌ Aucune solution trouvée après {iteration} itérations")
+    return SearchResult(
+        path=None,
+        iterations=iteration,
+        nodes_explored=explored_count,
+        max_frontier_size=max_frontier,
+        final_cost=float('inf'),
+        elapsed_time=elapsed,
+        algorithm=algo_name
+    )
 
 
 def h_zero(state: AssignmentTuple) -> float:
     return 0.0
 
 
-def a_star_search(problem: TimetablingProblem, h=h_zero) -> Optional[List[Any]]:
+def a_star_search(problem: TimetablingProblem, h=h_zero, verbose: bool = True) -> SearchResult:
+    algo_name = "A*"
+    start_time = time.time()
     start = problem.initial_state
     frontier: List[Tuple[float, Any]] = [(h(start), start)]
     parents: Dict[Any, Any] = {}
     best_g: Dict[Any, float] = {start: 0.0}
+    iteration = 0
+    max_frontier = 1
+    explored_count = 0
+
+    if verbose:
+        print(f"\n{'='*60}")
+        print(f"  ALGORITHME: {algo_name}")
+        print(f"{'='*60}")
+        print(f"État initial: {state_repr(start)}")
+        print(f"Frontière initiale: taille={len(frontier)}")
+        print(f"Explorés: 0 | Coût initial g=0.0, h={h(start)}, f={h(start)}")
+        print("-" * 60)
 
     while frontier:
+        iteration += 1
+        max_frontier = max(max_frontier, len(frontier))
         f, state = heapq.heappop(frontier)
         g = best_g[state]
+
         if f != g + h(state):
             continue
 
+        explored_count += 1
+
+        if verbose and iteration <= 10:
+            print(f"Itération {iteration}:")
+            print(f"  État courant: {state_repr(state)}")
+            print(f"  Frontière: {len(frontier)} états")
+            print(f"  Explorés: {explored_count}")
+            print(f"  Coût g(n): {g}, h(n): {h(state)}, f(n): {f}")
+
         if problem.goal_test(state):
-            return reconstruct_path(parents, start, state)
+            elapsed = time.time() - start_time
+            path = reconstruct_path(parents, start, state)
+            if verbose:
+                print(f"\n✅ SOLUTION TROUVÉE à l'itération {iteration}")
+                print(f"  Coût final: {g}")
+            return SearchResult(
+                path=path,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=g,
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
 
         for action in problem.actions(state):
             child = problem.result(state, action)
@@ -396,7 +620,24 @@ def a_star_search(problem: TimetablingProblem, h=h_zero) -> Optional[List[Any]]:
                 parents[child] = state
                 heapq.heappush(frontier, (new_g + h(child), child))
 
-    return None
+        if verbose and iteration <= 10:
+            print(f"  Actions possibles: {len(problem.actions(state))}")
+            print("-" * 60)
+        elif verbose and iteration == 11:
+            print("... (affichage des itérations suivantes omis)")
+
+    elapsed = time.time() - start_time
+    if verbose:
+        print(f"\n❌ Aucune solution trouvée après {iteration} itérations")
+    return SearchResult(
+        path=None,
+        iterations=iteration,
+        nodes_explored=explored_count,
+        max_frontier_size=max_frontier,
+        final_cost=float('inf'),
+        elapsed_time=elapsed,
+        algorithm=algo_name
+    )
 
 
 # ==========================================================
@@ -478,50 +719,130 @@ def diagnose_domains(problem: TimetablingProblem, limit: int = 50):
 # Main solve entry (JSON in/out)
 # ==========================================================
 
-def solve_from_json(input_path: str, output_path: str):
+def print_comparison_table(results: List[SearchResult]):
+    """Print a comparison table of all search algorithms."""
+    print("\n" + "=" * 100)
+    print("  COMPARAISON DES ALGORITHMES DE RECHERCHE")
+    print("=" * 100)
+    print(f"{'Algorithme':<12} {'Statut':<12} {'Itérations':<12} {'Explorés':<12} {'Max Frontière':<15} {'Coût Final':<12} {'Temps (s)':<12}")
+    print("-" * 100)
+
+    for r in results:
+        status = "✅ Succès" if r.path is not None else "❌ Échec"
+        cost_str = f"{r.final_cost:.1f}" if r.final_cost != float('inf') else "∞"
+        print(f"{r.algorithm:<12} {status:<12} {r.iterations:<12} {r.nodes_explored:<12} {r.max_frontier_size:<15} {cost_str:<12} {r.elapsed_time:<12.4f}")
+
+    print("=" * 100)
+    print()
+
+
+def solve_from_json(input_path: str, output_path: str, compare_all: bool = True):
     from timetable_io import load_input_json, export_output_json
 
     config, problem = load_input_json(input_path)
     diagnose_domains(problem)
-    strategy = str(config.get("strategy", "dfs")).lower()
 
-    if strategy == "dfs":
-        path = dfs_search(problem)
-    elif strategy == "bfs":
-        path = bfs_search(problem)
-    elif strategy == "ucs":
-        path = ucs_search(problem)
-    elif strategy in ("astar", "a*", "a_star"):
-        path = a_star_search(problem, h_zero)
-        strategy = "a_star"
-    else:
-        raise ValueError(f"Unknown strategy '{strategy}'. Use one of: dfs, bfs, ucs, astar")
+    if compare_all:
+        # Run all 4 algorithms and compare results
+        print("\n" + "#" * 100)
+        print("  EXÉCUTION DE TOUS LES ALGORITHMES POUR COMPARAISON")
+        print("#" * 100)
 
-    if path is None:
-        print("❌ No feasible schedule found.")
+        results: List[SearchResult] = []
+
+        # DFS
+        result_dfs = dfs_search(problem, verbose=True)
+        results.append(result_dfs)
+
+        # BFS
+        result_bfs = bfs_search(problem, verbose=True)
+        results.append(result_bfs)
+
+        # UCS
+        result_ucs = ucs_search(problem, verbose=True)
+        results.append(result_ucs)
+
+        # A*
+        result_astar = a_star_search(problem, h_zero, verbose=True)
+        results.append(result_astar)
+
+        # Print comparison table
+        print_comparison_table(results)
+
+        # Use first successful result for output
+        best_result = None
+        for r in results:
+            if r.path is not None:
+                best_result = r
+                break
+
+        if best_result is None:
+            print("❌ Aucun algorithme n'a trouvé de solution.")
+            export_output_json(
+                output_path,
+                config=config,
+                problem=problem,
+                final_state=None,
+                status="failure",
+                strategy="compare_all",
+            )
+            return
+
+        final_state: AssignmentTuple = best_result.path[-1]
+        print(f"✅ Meilleur résultat avec {best_result.algorithm}: {len(final_state)} événements planifiés")
+        pretty_print_schedule(problem, final_state)
+
         export_output_json(
             output_path,
             config=config,
             problem=problem,
-            final_state=None,
-            status="failure",
+            final_state=final_state,
+            status="success",
+            strategy=best_result.algorithm.lower(),
+        )
+        print(f"💾 Exported JSON: {output_path}")
+
+    else:
+        # Original behavior: run only the specified strategy
+        strategy = str(config.get("strategy", "dfs")).lower()
+
+        if strategy == "dfs":
+            result = dfs_search(problem, verbose=True)
+        elif strategy == "bfs":
+            result = bfs_search(problem, verbose=True)
+        elif strategy == "ucs":
+            result = ucs_search(problem, verbose=True)
+        elif strategy in ("astar", "a*", "a_star"):
+            result = a_star_search(problem, h_zero, verbose=True)
+            strategy = "a_star"
+        else:
+            raise ValueError(f"Unknown strategy '{strategy}'. Use one of: dfs, bfs, ucs, astar")
+
+        if result.path is None:
+            print("❌ No feasible schedule found.")
+            export_output_json(
+                output_path,
+                config=config,
+                problem=problem,
+                final_state=None,
+                status="failure",
+                strategy=strategy,
+            )
+            return
+
+        final_state: AssignmentTuple = result.path[-1]
+        print(f"✅ Feasible schedule found. events_scheduled={len(final_state)}/{len(problem.events_list)}")
+        pretty_print_schedule(problem, final_state)
+
+        export_output_json(
+            output_path,
+            config=config,
+            problem=problem,
+            final_state=final_state,
+            status="success",
             strategy=strategy,
         )
-        return
-
-    final_state: AssignmentTuple = path[-1]
-    print(f"✅ Feasible schedule found. events_scheduled={len(final_state)}/{len(problem.events_list)}")
-    pretty_print_schedule(problem, final_state)
-
-    export_output_json(
-        output_path,
-        config=config,
-        problem=problem,
-        final_state=final_state,
-        status="success",
-        strategy=strategy,
-    )
-    print(f"💾 Exported JSON: {output_path}")
+        print(f"💾 Exported JSON: {output_path}")
 
 
 if __name__ == "__main__":

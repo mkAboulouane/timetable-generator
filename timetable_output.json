@@ -1,12 +1,46 @@
 {
   "meta": {
-    "week_name": "BIG-TEST-5SESS",
+    "week_name": "T01",
     "weeks_total": 16,
     "strategy": "dfs",
     "use_mrv": true,
-    "status": "failure",
-    "events_total": 30,
-    "events_scheduled": 0
+    "status": "success",
+    "events_total": 1,
+    "events_scheduled": 1
   },
-  "assignments": []
+  "assignments": [
+    {
+      "event_id": "E1",
+      "session_id": "CP-1-S1",
+      "module_id": "M1",
+      "teacher_id": "T1",
+      "group_ids": [
+        "G1"
+      ],
+      "timeslot_id": "Tue_08-10",
+      "room_id": "R1",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "demand": 35,
+      "min_room_capacity": 0,
+      "required_capacity": 35,
+      "room_capacity": 40
+    }
+  ]
 }
