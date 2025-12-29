@@ -1,58 +1,12 @@
 {
   "meta": {
-    "week_name": "S1-2025",
+    "week_name": "BIG-TEST-5SESS",
+    "weeks_total": 16,
     "strategy": "dfs",
     "use_mrv": true,
-    "status": "success",
-    "events_total": 3,
-    "events_scheduled": 3
+    "status": "failure",
+    "events_total": 30,
+    "events_scheduled": 0
   },
-  "assignments": [
-    {
-      "event_id": "CP-1-S1_CM_MATH1",
-      "session_id": "CP-1-S1",
-      "module_id": "MATH1",
-      "teacher_id": "T_MATH",
-      "group_ids": [
-        "CP-1-S1_G1",
-        "CP-1-S1_G2"
-      ],
-      "timeslot_id": "Tue_10-1230",
-      "room_id": "R2",
-      "demand": 55,
-      "min_room_capacity": 60,
-      "required_capacity": 60,
-      "room_capacity": 80
-    },
-    {
-      "event_id": "CP-1-S1_TD_ALGO1_G1",
-      "session_id": "CP-1-S1",
-      "module_id": "ALGO1",
-      "teacher_id": "T_ALGO",
-      "group_ids": [
-        "CP-1-S1_G1"
-      ],
-      "timeslot_id": "Tue_14-16",
-      "room_id": "R2",
-      "demand": 28,
-      "min_room_capacity": 30,
-      "required_capacity": 30,
-      "room_capacity": 80
-    },
-    {
-      "event_id": "CP-1-S1_TD_ALGO1_G2",
-      "session_id": "CP-1-S1",
-      "module_id": "ALGO1",
-      "teacher_id": "T_ALGO",
-      "group_ids": [
-        "CP-1-S1_G2"
-      ],
-      "timeslot_id": "Mon_14-16",
-      "room_id": "R2",
-      "demand": 27,
-      "min_room_capacity": 30,
-      "required_capacity": 30,
-      "room_capacity": 80
-    }
-  ]
+  "assignments": []
 }

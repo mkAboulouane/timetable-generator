@@ -444,14 +444,45 @@ def pretty_print_schedule(problem: TimetablingProblem, assignment: AssignmentTup
     print("===========================================\n")
 
 
+
+def diagnose_domains(problem: TimetablingProblem, limit: int = 50):
+    """
+    Prints events that have 0 possible actions from the INITIAL state,
+    i.e. no (timeslot, room) satisfies availability + capacity constraints
+    (without considering conflicts with other events).
+    """
+    print("\n========== DIAGNOSE: INITIAL DOMAINS ==========")
+    bad = 0
+    for e in problem.events_list:
+        slots = problem.compatible_slots.get(e.id, ())
+        rooms = problem.compatible_rooms.get(e.id, ())
+        domain_size = len(slots) * len(rooms)
+        if domain_size == 0:
+            bad += 1
+            dem = event_demand(e, problem.groups)
+            required = max(dem, int(getattr(e, "min_room_capacity", 0)))
+            print(f"- EVENT {e.id} | teacher={e.teacher_id} | session={e.session_id} module={e.module_id}")
+            print(f"  groups={list(e.group_ids)} demand={dem} min_room_capacity={e.min_room_capacity} required={required}")
+            print(f"  compatible_slots={list(slots)}")
+            print(f"  compatible_rooms={list(rooms)}")
+            if bad >= limit:
+                print(f"... (stopping after {limit} zero-domain events)")
+                break
+    if bad == 0:
+        print("✅ All events have a non-empty initial domain (before conflicts).")
+    else:
+        print(f"❌ Found {bad} events with empty initial domain.")
+    print("=============================================\n")
+
 # ==========================================================
 # Main solve entry (JSON in/out)
 # ==========================================================
 
-def solve_from_json(input_path: str = "timetable_input.json", output_path: str = "timetable_output.json"):
+def solve_from_json(input_path: str, output_path: str):
     from timetable_io import load_input_json, export_output_json
 
     config, problem = load_input_json(input_path)
+    diagnose_domains(problem)
     strategy = str(config.get("strategy", "dfs")).lower()
 
     if strategy == "dfs":
@@ -494,4 +525,4 @@ def solve_from_json(input_path: str = "timetable_input.json", output_path: str =
 
 
 if __name__ == "__main__":
-    solve_from_json("timetable_input.json", "timetable_output.json")
+    solve_from_json("test/big_test_multi_sessions.json", "timetable_output.json")
