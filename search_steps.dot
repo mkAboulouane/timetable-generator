@@ -1,0 +1,11 @@
+digraph Search {
+  rankdir=LR;
+  node [shape=box, fontsize=10, fontname=Helvetica];
+  edge [fontsize=9, fontname=Helvetica];
+  n0 [label="(empty) start", shape="octagon", color="blue", penwidth="2"];
+  n1 [label="[('E1', 'Mon_08-10', 'R1')]"];
+  n2 [label="[('E1', 'Tue_08-10', 'R1')]", shape="doubleoctagon", color="green", penwidth="2"];
+  n0 -> n1 [label="('E1', 'Mon_08-10', 'R1')"];
+  n0 -> n2 [label="('E1', 'Tue_08-10', 'R1')"];
+  n0 -> n2 [style=dotted, color=gray, constraint=false];
+}

@@ -25,6 +25,15 @@ import heapq
 
 from problem_solving_agent import Problem
 
+# ==========================================================
+# Search trace / graph export (optional)
+# ==========================================================
+
+try:
+    from search_graph import SearchGraphRecorder
+except Exception:  # pragma: no cover
+    SearchGraphRecorder = None  # type: ignore
+
 
 # ==========================================================
 # Data model
@@ -322,8 +331,14 @@ def state_repr(state: AssignmentTuple, max_items: int = 3) -> str:
     return f"[{len(state)} assignments: {list(state[:max_items])}...]"
 
 
-def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
-    algo_name = "DFS"
+def dfs_search(
+    problem: TimetablingProblem,
+    verbose: bool = True,
+    *,
+    record_graph: bool = False,
+    algorithm_label: str = "DFS",
+):
+    algo_name = algorithm_label
     start_time = time.time()
     start = problem.initial_state
     frontier = [start]
@@ -331,6 +346,15 @@ def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
     visited = set()
     iteration = 0
     max_frontier = 1
+
+    recorder = None
+    if record_graph:
+        if SearchGraphRecorder is None:
+            raise RuntimeError(
+                "Graph recording requested but 'search_graph.py' could not be imported."
+            )
+        recorder = SearchGraphRecorder(algorithm=algo_name)
+        recorder.mark_start(start, label=f"{state_repr(start)}\nstart")
 
     if verbose:
         print(f"\n{'='*60}")
@@ -346,6 +370,19 @@ def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
         max_frontier = max(max_frontier, len(frontier))
         state = frontier.pop()
 
+        actions_list = problem.actions(state)
+
+        if recorder is not None:
+            recorder.add_iteration(
+                iteration=iteration,
+                current_state=state,
+                frontier_size=len(frontier),
+                explored_size=len(visited),
+                cost=float(len(state)),
+                actions_count=len(actions_list),
+                current_label=f"{state_repr(state)}\niter={iteration} f={len(frontier)} e={len(visited)}",
+            )
+
         if verbose and iteration <= 10:
             print(f"Itération {iteration}:")
             print(f"  État courant: {state_repr(state)}")
@@ -356,31 +393,45 @@ def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
         if problem.goal_test(state):
             elapsed = time.time() - start_time
             path = reconstruct_path(parents, start, state)
+            if recorder is not None:
+                recorder.mark_goal(state, label=f"{state_repr(state)}\nGOAL")
             if verbose:
                 print(f"\n✅ SOLUTION TROUVÉE à l'itération {iteration}")
                 print(f"  Coût final: {len(state)}")
-            return SearchResult(
+            result = SearchResult(
                 path=path,
                 iterations=iteration,
                 nodes_explored=len(visited),
                 max_frontier_size=max_frontier,
                 final_cost=float(len(state)),
                 elapsed_time=elapsed,
-                algorithm=algo_name
+                algorithm=algo_name,
             )
+            # Attach recorder if present (non-breaking: just set attribute)
+            if recorder is not None:
+                setattr(result, "graph", recorder)
+            return result
 
         if state in visited:
             continue
         visited.add(state)
 
-        for action in problem.actions(state):
+        for action in actions_list:
             child = problem.result(state, action)
             if child not in visited:
                 parents[child] = state
                 frontier.append(child)
+                if recorder is not None:
+                    recorder.add_edge(
+                        state,
+                        child,
+                        parent_label=state_repr(state),
+                        child_label=state_repr(child),
+                        attrs={"label": str(action)},
+                    )
 
         if verbose and iteration <= 10:
-            print(f"  Actions possibles: {len(problem.actions(state))}")
+            print(f"  Actions possibles: {len(actions_list)}")
             print("-" * 60)
         elif verbose and iteration == 11:
             print("... (affichage des itérations suivantes omis)")
@@ -388,15 +439,18 @@ def dfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
     elapsed = time.time() - start_time
     if verbose:
         print(f"\n❌ Aucune solution trouvée après {iteration} itérations")
-    return SearchResult(
+    result = SearchResult(
         path=None,
         iterations=iteration,
         nodes_explored=len(visited),
         max_frontier_size=max_frontier,
         final_cost=float('inf'),
         elapsed_time=elapsed,
-        algorithm=algo_name
+        algorithm=algo_name,
     )
+    if recorder is not None:
+        setattr(result, "graph", recorder)
+    return result
 
 
 def bfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
@@ -846,4 +900,4 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True)
 
 
 if __name__ == "__main__":
-    solve_from_json("test/big_test_multi_sessions.json", "timetable_output.json")
+    solve_from_json("test/01_baseline_success.json", "timetable_output.json")
