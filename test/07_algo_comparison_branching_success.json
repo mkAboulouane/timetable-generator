@@ -1,0 +1,92 @@
+{
+  "config": {
+    "week_name": "T07-ALGO-COMPARISON",
+    "weeks_total": 16,
+    "strategy": "dfs",
+    "use_mrv": false
+  },
+
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Mon_10-1230", "day": "Mon", "start": "10:30", "end": "12:30", "duration_min": 120 },
+    { "id": "Mon_14-16", "day": "Mon", "start": "14:00", "end": "16:00", "duration_min": 120 },
+    { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Tue_10-1230", "day": "Tue", "start": "10:30", "end": "12:30", "duration_min": 120 },
+    { "id": "Tue_14-16", "day": "Tue", "start": "14:00", "end": "16:00", "duration_min": 120 }
+  ],
+
+  "rooms": [
+    { "id": "R_BIG", "capacity": 120, "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] },
+    { "id": "R_TD", "capacity": 35, "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] }
+  ],
+
+  "teachers": [
+    { "id": "T_SHARED", "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] },
+    { "id": "T_OPT", "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] }
+  ],
+
+  "sessions": [
+    {
+      "id": "S1",
+      "weeks_total": 16,
+      "groups": [
+        { "id": "G1", "size": 28, "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] },
+        { "id": "G2", "size": 27, "available": ["Mon_08-10","Mon_10-1230","Mon_14-16","Tue_08-10","Tue_10-1230","Tue_14-16"] }
+      ],
+      "modules": [
+        {
+          "id": "LECTURES",
+          "min_room_capacity": 55,
+          "weeks": { "mode": "all" },
+          "events": [
+            {
+              "id": "E_CM_SHARED",
+              "teacher_id": "T_SHARED",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120
+            }
+          ]
+        },
+        {
+          "id": "TUTORIALS",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "all" },
+          "events": [
+            {
+              "id": "E_TD_G1",
+              "teacher_id": "T_SHARED",
+              "audience": { "type": "groups", "group_ids": ["G1"] },
+              "duration_min": 120
+            },
+            {
+              "id": "E_TD_G2",
+              "teacher_id": "T_SHARED",
+              "audience": { "type": "groups", "group_ids": ["G2"] },
+              "duration_min": 120
+            }
+          ]
+        },
+        {
+          "id": "OPTIONAL",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "list", "values": [1,2,3,4] },
+          "events": [
+            {
+              "id": "E_OPT_G1",
+              "teacher_id": "T_OPT",
+              "audience": { "type": "groups", "group_ids": ["G1"] },
+              "duration_min": 120
+            },
+            {
+              "id": "E_OPT_G2",
+              "teacher_id": "T_OPT",
+              "audience": { "type": "groups", "group_ids": ["G2"] },
+              "duration_min": 120
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

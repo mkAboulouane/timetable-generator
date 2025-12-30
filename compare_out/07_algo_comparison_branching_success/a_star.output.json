@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "week_name": "T07-ALGO-COMPARISON",
+    "weeks_total": 16,
+    "strategy": "a_star",
+    "use_mrv": false,
+    "status": "success",
+    "events_total": 5,
+    "events_scheduled": 5
+  },
+  "assignments": [
+    {
+      "event_id": "E_CM_SHARED",
+      "session_id": "S1",
+      "module_id": "LECTURES",
+      "teacher_id": "T_SHARED",
+      "group_ids": [
+        "G1",
+        "G2"
+      ],
+      "timeslot_id": "Mon_08-10",
+      "room_id": "R_BIG",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "demand": 55,
+      "min_room_capacity": 55,
+      "required_capacity": 55,
+      "room_capacity": 120
+    },
+    {
+      "event_id": "E_OPT_G1",
+      "session_id": "S1",
+      "module_id": "OPTIONAL",
+      "teacher_id": "T_OPT",
+      "group_ids": [
+        "G1"
+      ],
+      "timeslot_id": "Mon_10-1230",
+      "room_id": "R_BIG",
+      "weeks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "demand": 28,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 120
+    },
+    {
+      "event_id": "E_OPT_G2",
+      "session_id": "S1",
+      "module_id": "OPTIONAL",
+      "teacher_id": "T_OPT",
+      "group_ids": [
+        "G2"
+      ],
+      "timeslot_id": "Mon_14-16",
+      "room_id": "R_BIG",
+      "weeks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "demand": 27,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 120
+    },
+    {
+      "event_id": "E_TD_G1",
+      "session_id": "S1",
+      "module_id": "TUTORIALS",
+      "teacher_id": "T_SHARED",
+      "group_ids": [
+        "G1"
+      ],
+      "timeslot_id": "Mon_14-16",
+      "room_id": "R_TD",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "demand": 28,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 35
+    },
+    {
+      "event_id": "E_TD_G2",
+      "session_id": "S1",
+      "module_id": "TUTORIALS",
+      "teacher_id": "T_SHARED",
+      "group_ids": [
+        "G2"
+      ],
+      "timeslot_id": "Mon_10-1230",
+      "room_id": "R_TD",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "demand": 27,
+      "min_room_capacity": 30,
+      "required_capacity": 30,
+      "room_capacity": 35
+    }
+  ]
+}
