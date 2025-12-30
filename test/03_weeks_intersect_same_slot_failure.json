@@ -1,0 +1,36 @@
+{
+  "config": { "week_name": "T03", "weeks_total": 16, "strategy": "dfs", "use_mrv": true },
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 }
+  ],
+  "rooms": [
+    { "id": "R1", "capacity": 100, "available": ["Mon_08-10"] }
+  ],
+  "teachers": [
+    { "id": "T_MATH", "available": ["Mon_08-10"] }
+  ],
+  "sessions": [
+    {
+      "id": "CP-1-S1",
+      "groups": [
+        { "id": "G1", "size": 40, "available": ["Mon_08-10"] }
+      ],
+      "modules": [
+        {
+          "id": "M1",
+          "weeks": { "mode": "ranges", "values": ["1-10"] },
+          "events": [
+            { "id": "E1", "teacher_id": "T_MATH", "audience": { "type": "all_groups" }, "duration_min": 120 }
+          ]
+        },
+        {
+          "id": "M2",
+          "weeks": { "mode": "ranges", "values": ["6-16"] },
+          "events": [
+            { "id": "E2", "teacher_id": "T_MATH", "audience": { "type": "all_groups" }, "duration_min": 120 }
+          ]
+        }
+      ]
+    }
+  ]
+}

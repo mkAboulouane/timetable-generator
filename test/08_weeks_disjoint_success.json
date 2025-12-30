@@ -1,0 +1,91 @@
+{
+  "config": {
+    "week_name": "T08-WEEKS-DISJOINT-ALGO",
+    "weeks_total": 16,
+    "use_mrv": false
+  },
+
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Mon_10-1230", "day": "Mon", "start": "10:30", "end": "12:30", "duration_min": 120 },
+    { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Tue_10-1230", "day": "Tue", "start": "10:30", "end": "12:30", "duration_min": 120 }
+  ],
+
+  "rooms": [
+    { "id": "R1", "capacity": 40, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+  ],
+
+  "teachers": [
+    { "id": "T1", "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+  ],
+
+  "sessions": [
+    {
+      "id": "S1",
+      "weeks_total": 16,
+      "groups": [
+        { "id": "G1", "size": 30, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+      ],
+      "modules": [
+        {
+          "id": "MOD_A",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "ranges", "values": ["1-8"] },
+          "events": [
+            {
+              "id": "E_A",
+              "teacher_id": "T1",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_08-10"]
+            }
+          ]
+        },
+        {
+          "id": "MOD_B",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "ranges", "values": ["9-16"] },
+          "events": [
+            {
+              "id": "E_B",
+              "teacher_id": "T1",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_08-10"]
+            }
+          ]
+        },
+        {
+          "id": "MOD_C",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "list", "values": [1,3,5,7] },
+          "events": [
+            {
+              "id": "E_C",
+              "teacher_id": "T1",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120,
+              "allowed_slots": ["Tue_08-10", "Tue_10-1230"]
+            }
+          ]
+        },
+        {
+          "id": "MOD_D",
+          "min_room_capacity": 30,
+          "weeks": { "mode": "list", "values": [2,4,6,8] },
+          "events": [
+            {
+              "id": "E_D",
+              "teacher_id": "T1",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120,
+              "allowed_slots": ["Tue_08-10", "Tue_10-1230"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,32 @@
+{
+  "config": { "week_name": "T04", "weeks_total": 16, "strategy": "dfs", "use_mrv": true },
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 }
+  ],
+  "rooms": [
+    { "id": "R_small", "capacity": 45, "available": ["Mon_08-10", "Tue_08-10"] },
+    { "id": "R_big", "capacity": 120, "available": ["Mon_08-10", "Tue_08-10"] }
+  ],
+  "teachers": [
+    { "id": "T1", "available": ["Mon_08-10", "Tue_08-10"] }
+  ],
+  "sessions": [
+    {
+      "id": "GI-S1",
+      "groups": [
+        { "id": "GI_G1", "size": 40, "available": ["Mon_08-10", "Tue_08-10"] }
+      ],
+      "modules": [
+        {
+          "id": "M_BIG_ROOM",
+          "min_room_capacity": 80,
+          "weeks": { "mode": "all" },
+          "events": [
+            { "id": "E_BIG", "teacher_id": "T1", "audience": { "type": "all_groups" }, "duration_min": 120 }
+          ]
+        }
+      ]
+    }
+  ]
+}

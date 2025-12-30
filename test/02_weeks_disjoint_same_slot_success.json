@@ -1,0 +1,38 @@
+{
+  "config": { "week_name": "T02", "weeks_total": 16, "strategy": "dfs", "use_mrv": true },
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 }
+  ],
+  "rooms": [
+    { "id": "R2", "capacity": 100, "available": ["Mon_08-10"] }
+  ],
+  "teachers": [
+    { "id": "T_MATH", "available": ["Mon_08-10"] }
+  ],
+  "sessions": [
+    {
+      "id": "CP-1-S1",
+      "groups": [
+        { "id": "CPG1", "size": 40, "available": ["Mon_08-10"] }
+      ],
+      "modules": [
+        {
+          "id": "MATH_PART1",
+          "min_room_capacity": 0,
+          "weeks": { "mode": "ranges", "values": ["1-8"] },
+          "events": [
+            { "id": "CM_MATH_P1", "teacher_id": "T_MATH", "audience": { "type": "all_groups" }, "duration_min": 120 }
+          ]
+        },
+        {
+          "id": "MATH_PART2",
+          "min_room_capacity": 0,
+          "weeks": { "mode": "ranges", "values": ["9-16"] },
+          "events": [
+            { "id": "CM_MATH_P2", "teacher_id": "T_MATH", "audience": { "type": "all_groups" }, "duration_min": 120 }
+          ]
+        }
+      ]
+    }
+  ]
+}
