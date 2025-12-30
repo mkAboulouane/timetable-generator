@@ -2,7 +2,6 @@
   "config": {
     "week_name": "T08-WEEKS-DISJOINT-ALGO",
     "weeks_total": 16,
-    "strategy": "dfs",
     "use_mrv": false
   },
 
