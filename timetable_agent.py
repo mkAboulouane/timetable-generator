@@ -222,8 +222,18 @@ class TimetablingProblem(Problem):
                 group_av &= set(self.groups[gid].available)
 
             slots = duration_slots & teacher_av & group_av
+
+            # Handle allowed_slots with support for ALL/all macro
             if e.allowed_slots is not None:
-                slots &= set(e.allowed_slots)
+                allowed_set = set()
+                for slot in e.allowed_slots:
+                    if slot.upper() == "ALL":
+                        # "ALL" or "all" means all available timeslots
+                        allowed_set = all_slot_ids
+                        break
+                    else:
+                        allowed_set.add(slot)
+                slots &= allowed_set
 
             self.compatible_slots[e.id] = tuple(sorted(slots))
 

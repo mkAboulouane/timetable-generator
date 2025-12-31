@@ -2,11 +2,84 @@
   "meta": {
     "week_name": "CP1-S1-P1",
     "weeks_total": 16,
-    "strategy": "compare_all",
+    "strategy": "dfs",
     "use_mrv": false,
-    "status": "failure",
+    "status": "success",
     "events_total": 2,
-    "events_scheduled": 0
+    "events_scheduled": 2
   },
-  "assignments": []
+  "assignments": [
+    {
+      "event_id": "Cours",
+      "session_id": "S1",
+      "module_id": "Algorithmique et Programmation en Python",
+      "teacher_id": "EZZAHI",
+      "group_ids": [
+        "G1"
+      ],
+      "timeslot_id": "Wed_10-1230",
+      "room_id": "S13",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 4.0,
+      "demand": 40,
+      "min_room_capacity": 40,
+      "required_capacity": 40,
+      "room_capacity": 50
+    },
+    {
+      "event_id": "TD",
+      "session_id": "S1",
+      "module_id": "Algorithmique et Programmation en Python",
+      "teacher_id": "EZZAHI",
+      "group_ids": [
+        "G1"
+      ],
+      "timeslot_id": "Wed_08-10",
+      "room_id": "S13",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 4.0,
+      "demand": 40,
+      "min_room_capacity": 40,
+      "required_capacity": 40,
+      "room_capacity": 50
+    }
+  ]
 }

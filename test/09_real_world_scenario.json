@@ -1,86 +1,304 @@
 {
   "config": {
-    "week_name": "T08-WEEKS-DISJOINT-ALGO",
+    "week_name": "CP1-S1-P1",
     "weeks_total": 16,
     "use_mrv": false
   },
-
   "timeslots": [
-    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
-    { "id": "Mon_10-1230", "day": "Mon", "start": "10:30", "end": "12:30", "duration_min": 120 },
-    { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 },
-    { "id": "Tue_10-1230", "day": "Tue", "start": "10:30", "end": "12:30", "duration_min": 120 }
+    {
+      "id": "Mon_08-10",
+      "day": "Mon",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_10-1230",
+      "day": "Mon",
+      "start": "10:30",
+      "end": "12:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_14-16",
+      "day": "Mon",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_16-1830",
+      "day": "Mon",
+      "start": "16:30",
+      "end": "18:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_08-10",
+      "day": "Tue",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_10-1230",
+      "day": "Tue",
+      "start": "10:30",
+      "end": "12:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_14-16",
+      "day": "Tue",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_16-1830",
+      "day": "Tue",
+      "start": "16:30",
+      "end": "18:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_08-10",
+      "day": "Wed",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_10-1230",
+      "day": "Wed",
+      "start": "10:30",
+      "end": "12:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_14-16",
+      "day": "Wed",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_16-1830",
+      "day": "Wed",
+      "start": "16:30",
+      "end": "18:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_08-10",
+      "day": "Thu",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_10-1230",
+      "day": "Thu",
+      "start": "10:30",
+      "end": "12:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_14-16",
+      "day": "Thu",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_16-1830",
+      "day": "Thu",
+      "start": "16:30",
+      "end": "18:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_08-10",
+      "day": "Fri",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_10-1230",
+      "day": "Fri",
+      "start": "10:30",
+      "end": "12:30",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_14-16",
+      "day": "Fri",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_16-1830",
+      "day": "Fri",
+      "start": "16:30",
+      "end": "18:30",
+      "duration_min": 120
+    }
   ],
-
   "rooms": [
-    { "id": "R1", "capacity": 40, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+    {
+      "id": "S11",
+      "capacity": 80,
+      "available": [
+        "ALL"
+      ]
+    },
+    {
+      "id": "S12",
+      "capacity": 40,
+      "available": [
+        "ALL"
+      ]
+    },
+    {
+      "id": "S13",
+      "capacity": 50,
+      "available": [
+        "ALL"
+      ]
+    }
   ],
-
   "teachers": [
-    { "id": "T1", "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+    {
+      "id": "KADDARI",
+      "available": [
+        "Mon_08-10",
+        "Mon_10-1230",
+        "Tue_08-10",
+        "Tue_10-1230",
+        "Wed_14-16",
+        "Wed_16-1830",
+        "Thu_14-16",
+        "Thu_16-1830",
+        "Fri_10-1230"
+      ]
+    },
+    {
+      "id": "FARAJI",
+      "available": [
+        "Mon_08-10",
+        "Mon_10-1230",
+        "Tue_14-16",
+        "Tue_16-1830",
+        "Thu_08-10",
+        "Thu_10-1230",
+        "Thu_14-16",
+        "Thu_16-1830",
+        "Fri_14-16"
+      ]
+    },
+    {
+      "id": "EZZAHI",
+      "available": [
+        "Tue_08-10",
+        "Tue_10-1230",
+        "Tue_14-16",
+        "Tue_16-1830",
+        "Wed_08-10",
+        "Wed_10-1230",
+        "Thu_14-16",
+        "Thu_16-1830"
+      ]
+    },
+    {
+      "id": "CHAIBI",
+      "available": [
+        "Mon_08-10",
+        "Mon_10-1230",
+        "Tue_14-16",
+        "Tue_16-1830",
+        "Wed_08-10",
+        "Wed_10-1230",
+        "Thu_14-16",
+        "Thu_16-1830",
+        "Thu_14-16",
+        "Thu_16-1830"
+      ]
+    },
+    {
+      "id": "OUASSOU",
+      "available": [
+        "Mon_14-16",
+        "Mon_16-1830",
+        "Wed_08-10",
+        "Wed_10-1230",
+        "Wed_14-16",
+        "Wed_16-1830",
+        "Thu_08-10",
+        "Fri_14-16",
+        "Fri_16-1830"
+      ]
+    },
+    {
+      "id": "TAOURIRTE",
+      "available": [
+        "Mon_14-16",
+        "Mon_16-1830",
+        "Wed_08-10",
+        "Wed_10-1230",
+        "Thu_08-10",
+        "Thu_10-1230",
+        "Fri_08-10",
+        "Fri_10-1230",
+        "Fri_14-16"
+      ]
+    }
   ],
-
   "sessions": [
     {
       "id": "S1",
       "weeks_total": 16,
       "groups": [
-        { "id": "G1", "size": 30, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+        {
+          "id": "G1",
+          "size": 40,
+          "available": [
+            "ALL"
+          ]
+        }
       ],
       "modules": [
         {
-          "id": "MOD_A",
-          "min_room_capacity": 30,
-          "weeks": { "mode": "ranges", "values": ["1-8"] },
+          "id": "Algorithmique et Programmation en Python",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
           "events": [
             {
-              "id": "E_A",
-              "teacher_id": "T1",
-              "audience": { "type": "all_groups" },
+              "id": "Cours",
+              "teacher_id": "EZZAHI",
+              "audience": {
+                "type": "all_groups"
+              },
               "duration_min": 120,
-              "allowed_slots": ["Mon_08-10"]
-            }
-          ]
-        },
-        {
-          "id": "MOD_B",
-          "min_room_capacity": 30,
-          "weeks": { "mode": "ranges", "values": ["9-16"] },
-          "events": [
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
             {
-              "id": "E_B",
-              "teacher_id": "T1",
-              "audience": { "type": "all_groups" },
+              "id": "TD",
+              "teacher_id": "EZZAHI",
+              "audience": {
+                "type": "all_groups"
+              },
               "duration_min": 120,
-              "allowed_slots": ["Mon_08-10"]
-            }
-          ]
-        },
-        {
-          "id": "MOD_C",
-          "min_room_capacity": 30,
-          "weeks": { "mode": "list", "values": [1,3,5,7] },
-          "events": [
-            {
-              "id": "E_C",
-              "teacher_id": "T1",
-              "audience": { "type": "all_groups" },
-              "duration_min": 120,
-              "allowed_slots": ["Tue_08-10", "Tue_10-1230"]
-            }
-          ]
-        },
-        {
-          "id": "MOD_D",
-          "min_room_capacity": 30,
-          "weeks": { "mode": "list", "values": [2,4,6,8] },
-          "events": [
-            {
-              "id": "E_D",
-              "teacher_id": "T1",
-              "audience": { "type": "all_groups" },
-              "duration_min": 120,
-              "allowed_slots": ["Tue_08-10", "Tue_10-1230"]
+              "allowed_slots": [
+                "ALL"
+              ]
             }
           ]
         }

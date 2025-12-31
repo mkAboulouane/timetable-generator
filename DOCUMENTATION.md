@@ -325,8 +325,17 @@ Events are the actual scheduled items (lectures, tutorials, labs).
 | `teacher_id` | string | ✅ | ID of the teacher for this event |
 | `duration_min` | integer | ✅ | Duration in minutes (must match a timeslot duration) |
 | `audience` | object | ✅ | Specifies which groups attend |
-| `allowed_slots` | array[string] | ❌ | Restrict to specific timeslot IDs |
+| `allowed_slots` | array[string] | ❌ | Restrict to specific timeslot IDs. Supports `"ALL"`/`"all"` macro. |
 | `weeks` | object | ❌ | Override module weeks for this event |
+
+#### Allowed Slots Patterns
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| **Omit field** | No restriction, any compatible slot | Omit `allowed_slots` field |
+| **Specific slots** | List exact timeslots | `"allowed_slots": ["Mon_08-10", "Tue_10-12"]` |
+| **All slots** | Use `"ALL"` or `"all"` macro | `"allowed_slots": ["ALL"]` or `"allowed_slots": ["all"]` |
+| **Mixed** | Combine specific slots | `"allowed_slots": ["Mon_08-10", "ALL"]` (ALL takes precedence) |
 
 #### Audience Object
 
