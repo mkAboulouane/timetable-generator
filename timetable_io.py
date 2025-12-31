@@ -142,6 +142,7 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
         for m in s.get("modules", []):
             module_id = m["id"]
             min_room_capacity = int(m.get("min_room_capacity", 0))
+            hours_per_week = float(m.get("hours_per_week", 0))
 
             module_weeks = parse_weeks(m.get("weeks"), session_weeks_total)
 
@@ -172,6 +173,7 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
                         min_room_capacity=min_room_capacity,
                         session_id=session_id,
                         module_id=module_id,
+                        module_hours_per_week=hours_per_week,
                         weeks=event_weeks,
                     )
                 )
@@ -228,6 +230,9 @@ def export_output_json(
                 "timeslot_id": tid,
                 "room_id": rid,
                 "weeks": sorted(list(e.weeks)),
+                "duration_min": e.duration_min,
+                "duration_hours": e.duration_min / 60.0,
+                "module_hours_per_week": e.module_hours_per_week,
                 "demand": dem,
                 "min_room_capacity": int(getattr(e, "min_room_capacity", 0)),
                 "required_capacity": required,

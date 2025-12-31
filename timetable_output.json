@@ -28,6 +28,9 @@
         10,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 2.0,
       "demand": 55,
       "min_room_capacity": 60,
       "required_capacity": 60,
@@ -56,6 +59,9 @@
         13,
         14
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 4.0,
       "demand": 28,
       "min_room_capacity": 30,
       "required_capacity": 30,
@@ -84,6 +90,9 @@
         13,
         14
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 4.0,
       "demand": 27,
       "min_room_capacity": 30,
       "required_capacity": 30,
@@ -109,6 +118,9 @@
         15,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 2.0,
       "demand": 34,
       "min_room_capacity": 30,
       "required_capacity": 34,
@@ -142,6 +154,9 @@
         15,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 2.0,
       "demand": 34,
       "min_room_capacity": 30,
       "required_capacity": 34,

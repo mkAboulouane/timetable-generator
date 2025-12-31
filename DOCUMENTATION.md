@@ -228,9 +228,40 @@ Modules are courses/subjects containing one or more events.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | ✅ | Unique module identifier (e.g., `"MATH101"`) |
+| `hours_per_week` | number | ❌ | Total hours per week for this module (e.g., `2`, `4`, `6`). Used for documentation and validation. |
 | `min_room_capacity` | integer | ❌ | Minimum required room capacity (default: 0) |
 | `weeks` | object | ❌ | Weeks when this module runs (inherited by events) |
 | `events` | array | ✅ | List of events for this module |
+
+**Example:**
+```json
+{
+  "modules": [
+    {
+      "id": "MATH101",
+      "hours_per_week": 4,
+      "min_room_capacity": 60,
+      "weeks": { "mode": "all" },
+      "events": [
+        { "id": "CM_MATH", "duration_min": 120, ... },
+        { "id": "TD_MATH", "duration_min": 120, ... }
+      ]
+    },
+    {
+      "id": "INFO101",
+      "hours_per_week": 6,
+      "min_room_capacity": 30,
+      "events": [
+        { "id": "CM_INFO", "duration_min": 120, ... },
+        { "id": "TD_INFO_G1", "duration_min": 120, ... },
+        { "id": "TP_INFO_G1", "duration_min": 120, ... }
+      ]
+    }
+  ]
+}
+```
+
+> **Note:** The `hours_per_week` field is informational. The actual scheduling is based on individual event `duration_min` values. Use this to document the expected weekly load for each module.
 
 ### 2.9 Weeks Object
 
@@ -315,6 +346,7 @@ Events are the actual scheduled items (lectures, tutorials, labs).
       "modules": [
         {
           "id": "MATH101",
+          "hours_per_week": 2,
           "min_room_capacity": 60,
           "weeks": { "mode": "list", "values": [1, 3, 5, 7, 9, 11, 13, 15] },
           "events": [
@@ -328,6 +360,7 @@ Events are the actual scheduled items (lectures, tutorials, labs).
         },
         {
           "id": "INFO101",
+          "hours_per_week": 4,
           "min_room_capacity": 30,
           "weeks": { "mode": "ranges", "values": ["1-8", "10-16"] },
           "events": [
@@ -540,6 +573,9 @@ Each assignment contains:
 | `timeslot_id` | string | Assigned timeslot |
 | `room_id` | string | Assigned room |
 | `weeks` | array[int] | Weeks when event runs |
+| `duration_min` | integer | Event duration in minutes |
+| `duration_hours` | number | Event duration in hours (e.g., 2.0) |
+| `module_hours_per_week` | number | Module's weekly hour allocation (from input) |
 | `demand` | integer | Total students (sum of group sizes) |
 | `min_room_capacity` | integer | From module definition |
 | `required_capacity` | integer | max(demand, min_room_capacity) |
@@ -568,6 +604,9 @@ Each assignment contains:
       "timeslot_id": "Tue_08-10",
       "room_id": "R2",
       "weeks": [1, 3, 5, 7, 10, 16],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 4.0,
       "demand": 55,
       "min_room_capacity": 60,
       "required_capacity": 60,
@@ -582,6 +621,9 @@ Each assignment contains:
       "timeslot_id": "Tue_08-10",
       "room_id": "R1",
       "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 2.0,
       "demand": 34,
       "min_room_capacity": 30,
       "required_capacity": 34,

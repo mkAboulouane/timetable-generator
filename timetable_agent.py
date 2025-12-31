@@ -81,6 +81,9 @@ class Event:
     session_id: str = ""
     module_id: str = ""
 
+    # Module hours per week (informational, from module config)
+    module_hours_per_week: float = 0.0
+
     # Active weeks for this event (e.g., {1,3,5} or weeks from ranges)
     weeks: FrozenSet[int] = frozenset()
 

@@ -25,6 +25,7 @@
       "modules": [
         {
           "id": "MATH1",
+          "hours_per_week": 2,
           "min_room_capacity": 60,
           "weeks": { "mode": "list", "values": [1,3,5,7,10,16] },
           "events": [
@@ -33,6 +34,7 @@
         },
         {
           "id": "ALGO1",
+          "hours_per_week": 4,
           "min_room_capacity": 30,
           "weeks": { "mode": "ranges", "values": ["1-6","10-14"] },
           "events": [
@@ -50,6 +52,7 @@
       "modules": [
         {
           "id": "NET1",
+          "hours_per_week": 2,
           "min_room_capacity": 30,
           "weeks": { "mode": "all" },
           "events": [
@@ -58,6 +61,7 @@
         },
         {
           "id": "MATH_GI",
+          "hours_per_week": 2,
           "min_room_capacity": 30,
           "weeks": { "mode": "ranges", "values": ["9-16"] },
           "events": [
