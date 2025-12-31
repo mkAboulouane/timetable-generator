@@ -181,6 +181,7 @@
     {
       "id": "FARAJI",
       "available": [
+        "Wed_14-16",
         "Mon_08-10",
         "Mon_10-1230"
       ]
@@ -234,7 +235,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -267,7 +270,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -300,7 +305,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -333,7 +340,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -366,7 +375,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -399,7 +410,9 @@
           "hours_per_week": 4,
           "weeks": {
             "mode": "ranges",
-            "values": ["1-16"]
+            "values": [
+              "1-16"
+            ]
           },
           "events": [
             {
@@ -416,6 +429,45 @@
             {
               "id": "TD",
               "teacher_id": "TAOUDI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S2",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "G2",
+          "size": 40,
+          "available": [
+            "ALL"
+          ]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Mécanique de solide",
+          "min_room_capacity": 40,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": [
+              "1-16"
+            ]
+          },
+          "events": [
+            {
+              "id": "Cours",
+              "teacher_id": "FARAJI",
               "audience": {
                 "type": "all_groups"
               },
