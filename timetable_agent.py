@@ -786,6 +786,40 @@ def diagnose_domains(problem: TimetablingProblem, limit: int = 50):
 # Main solve entry (JSON in/out)
 # ==========================================================
 
+def _generate_html_timetable(json_path: str, config: Dict[str, Any]):
+    """Generate HTML timetable automatically after JSON export."""
+    try:
+        from timetable_export import load_output_json, generate_html_timetable
+        import os
+
+        # Generate HTML filename from JSON filename
+        base_name = os.path.splitext(json_path)[0]
+        html_path = f"{base_name}.html"
+
+        # Load the JSON data
+        data = load_output_json(json_path)
+
+        # Generate HTML timetable
+        generate_html_timetable(data, html_path)
+
+        print(f"📊 Auto-generated HTML: {html_path}")
+        print("   💡 Open the HTML file in a browser to view the visual timetable.")
+
+        # Check if we have multiple sessions, offer session-based export
+        assignments = data.get("assignments", [])
+        sessions = set(a.get("session_id", "unknown") for a in assignments)
+
+        if len(sessions) > 1:
+            print(f"   📚 Multiple sessions detected ({len(sessions)} sessions)")
+            print(f"   💡 Run: python timetable_export.py {json_path} --by-session")
+            print("      to generate separate timetables per session.")
+
+    except Exception as e:
+        print(f"⚠️  Failed to generate HTML: {e}")
+        print("   You can manually generate it with:")
+        print(f"   python timetable_export.py {json_path}")
+
+
 def print_comparison_table(results: List[SearchResult]):
     """Print a comparison table of all search algorithms."""
     print("\n" + "=" * 100)
@@ -803,8 +837,9 @@ def print_comparison_table(results: List[SearchResult]):
     print()
 
 
-def solve_from_json(input_path: str, output_path: str, compare_all: bool = True):
+def solve_from_json(input_path: str, output_path: str, compare_all: bool = True, auto_html: bool = True):
     from timetable_io import load_input_json, export_output_json
+    import os
 
     config, problem = load_input_json(input_path)
     diagnose_domains(problem)
@@ -869,6 +904,10 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True)
         )
         print(f"💾 Exported JSON: {output_path}")
 
+        # Auto-generate HTML timetable
+        if auto_html:
+            _generate_html_timetable(output_path, config)
+
     else:
         # Original behavior: run only the specified strategy
         strategy = str(config.get("strategy", "dfs")).lower()
@@ -910,6 +949,10 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True)
             strategy=strategy,
         )
         print(f"💾 Exported JSON: {output_path}")
+
+        # Auto-generate HTML timetable
+        if auto_html:
+            _generate_html_timetable(output_path, config)
 
 
 if __name__ == "__main__":
