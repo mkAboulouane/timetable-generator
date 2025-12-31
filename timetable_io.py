@@ -236,3 +236,5 @@ def export_output_json(
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
+
+    return output
