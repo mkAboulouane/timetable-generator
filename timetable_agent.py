@@ -22,6 +22,8 @@ from dataclasses import dataclass
 from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 from collections import deque
 import heapq
+import json
+from datetime import datetime
 
 from problem_solving_agent import Problem
 
@@ -955,5 +957,372 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True,
             _generate_html_timetable(output_path, config)
 
 
+def solve_from_json_advanced(input_path: str, output_path: str,
+                           compare_all: bool = True, auto_html: bool = True,
+                           enable_validation: bool = True, enable_backup: bool = True,
+                           export_formats: List[str] = None):
+    """
+    Enhanced solve function with advanced features:
+    - Conflict detection and analysis
+    - Quality validation and scoring
+    - Automatic backup creation
+    - Multiple export formats
+    - Preference-based optimization
+    """
+    from timetable_io import load_input_json, export_output_json
+    import os
+
+    if not ADVANCED_FEATURES:
+        print("⚠️ Advanced features not available, falling back to basic solve")
+        return solve_from_json(input_path, output_path, compare_all, auto_html)
+
+    # Create backup if enabled
+    backup_manager = None
+    if enable_backup:
+        backup_manager = TimetableBackupManager()
+        backup_version = backup_manager.create_backup(
+            input_path, output_path,
+            f"Pre-solve backup - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        )
+        print(f"🔄 Created backup: {backup_version}")
+
+    # Load configuration and create problem
+    config, problem = load_input_json(input_path)
+
+    # Enhanced domain diagnosis with conflict detection
+    print("\n🔍 ENHANCED PROBLEM ANALYSIS")
+    print("=" * 50)
+    diagnose_domains(problem)
+
+    # Load preferences if available
+    preferences = None
+    if "preferences" in config:
+        preferences = load_preferences_from_json(config["preferences"])
+        print(f"✅ Loaded {len(preferences.preferences)} scheduling preferences")
+
+    # Solve the problem
+    if compare_all:
+        print("\n" + "#" * 100)
+        print("  EXÉCUTION DE TOUS LES ALGORITHMES POUR COMPARAISON")
+        print("#" * 100)
+
+        results: List[SearchResult] = []
+
+        # Run all algorithms
+        result_dfs = dfs_search(problem, verbose=True)
+        results.append(result_dfs)
+
+        result_bfs = bfs_search(problem, verbose=True)
+        results.append(result_bfs)
+
+        result_ucs = ucs_search(problem, verbose=True)
+        results.append(result_ucs)
+
+        result_astar = a_star_search(problem, h_zero, verbose=True)
+        results.append(result_astar)
+
+        print_comparison_table(results)
+
+        # Select best result (prefer DFS if multiple succeed)
+        best_result = None
+        for r in results:
+            if r.path is not None:
+                best_result = r
+                break
+
+        if best_result is None:
+            print("❌ Aucun algorithme n'a trouvé de solution.")
+
+            # Analyze why no solution was found
+            conflict_detector = ConflictDetector(problem)
+            conflicts = conflict_detector.analyze_schedule([])  # Empty schedule analysis
+            if conflicts:
+                print("\n🚨 CONFLICT ANALYSIS")
+                print(generate_conflict_report(conflicts))
+
+            export_output_json(
+                output_path, config=config, problem=problem,
+                final_state=None, status="failure", strategy="compare_all"
+            )
+            return None
+
+        final_state: AssignmentTuple = best_result.path[-1]
+        print(f"✅ Meilleur résultat avec {best_result.algorithm}: {len(final_state)} événements planifiés")
+        pretty_print_schedule(problem, final_state)
+
+        export_output_json(
+            output_path,
+            config=config,
+            problem=problem,
+            final_state=final_state,
+            status="success",
+            strategy=best_result.algorithm.lower(),
+        )
+        print(f"💾 Exported JSON: {output_path}")
+
+        # Auto-generate HTML timetable
+        if auto_html:
+            _generate_html_timetable(output_path, config)
+
+    else:
+        # Single algorithm mode
+        strategy = str(config.get("strategy", "dfs")).lower()
+
+        if strategy == "dfs":
+            result = dfs_search(problem, verbose=True)
+        elif strategy == "bfs":
+            result = bfs_search(problem, verbose=True)
+        elif strategy == "ucs":
+            result = ucs_search(problem, verbose=True)
+        elif strategy in ("astar", "a*", "a_star"):
+            result = a_star_search(problem, h_zero, verbose=True)
+            strategy = "a_star"
+        else:
+            raise ValueError(f"Unknown strategy '{strategy}'. Use one of: dfs, bfs, ucs, astar")
+
+        if result.path is None:
+            print("❌ No feasible schedule found.")
+
+            # Analyze conflicts
+            conflict_detector = ConflictDetector(problem)
+            conflicts = conflict_detector.analyze_schedule([])
+            if conflicts:
+                print("\n🚨 CONFLICT ANALYSIS")
+                print(generate_conflict_report(conflicts))
+
+            export_output_json(
+                output_path, config=config, problem=problem,
+                final_state=None, status="failure", strategy=strategy
+            )
+            return None
+
+        final_state: AssignmentTuple = result.path[-1]
+        best_result = result
+        print(f"✅ Feasible schedule found. events_scheduled={len(final_state)}/{len(problem.events_list)}")
+
+    # Display basic schedule
+    pretty_print_schedule(problem, final_state)
+
+    # Advanced validation and quality analysis
+    conflicts = []
+    quality_report = None
+
+    if enable_validation:
+        print("\n📊 ADVANCED SCHEDULE ANALYSIS")
+        print("=" * 50)
+
+        # Conflict detection
+        conflict_detector = ConflictDetector(problem)
+        conflicts = conflict_detector.analyze_schedule(final_state)
+
+        if conflicts:
+            print("🚨 CONFLICTS DETECTED:")
+            print(generate_conflict_report(conflicts))
+        else:
+            print("✅ No conflicts detected in final schedule")
+
+        # Quality validation
+        validator = ScheduleValidator(problem)
+        quality_report = validator.validate_and_assess(final_state)
+
+        print(f"\n{generate_quality_report(quality_report)}")
+
+        # Preference evaluation if available
+        if preferences:
+            preference_score = preferences.evaluate_schedule_quality(final_state, problem)
+            print(f"\n🎯 PREFERENCE SATISFACTION: {preference_score:.1%}")
+
+    # Export main JSON
+    export_output_json(
+        output_path, config=config, problem=problem,
+        final_state=final_state, status="success",
+        strategy=best_result.algorithm.lower()
+    )
+    print(f"💾 Exported JSON: {output_path}")
+
+    # Auto-generate HTML
+    if auto_html:
+        _generate_html_timetable(output_path, config)
+
+    # Enhanced export formats
+    if export_formats:
+        try:
+            with open(output_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            exporter = EnhancedTimetableExporter(data)
+            base_name = os.path.splitext(output_path)[0]
+
+            print(f"\n📤 EXPORTING ADDITIONAL FORMATS")
+            print("-" * 40)
+
+            for fmt in export_formats:
+                if fmt == 'csv':
+                    exporter.export_csv(f"{base_name}.csv")
+                elif fmt == 'ical':
+                    exporter.export_ical(f"{base_name}.ics")
+                elif fmt == 'xml':
+                    exporter.export_xml(f"{base_name}.xml")
+                elif fmt == 'enhanced_json':
+                    exporter.export_enhanced_json(f"{base_name}_enhanced.json")
+                elif fmt == 'moodle':
+                    exporter.export_moodle_xml(f"{base_name}_moodle.xml")
+                elif fmt == 'teams':
+                    exporter.export_teams_integration(f"{base_name}_teams.json")
+                elif fmt == 'stats':
+                    exporter.export_statistics_report(f"{base_name}_stats.txt")
+                elif fmt == 'all':
+                    exporter.export_all_formats(base_name)
+                    break
+
+        except Exception as e:
+            print(f"⚠️ Error exporting formats: {e}")
+
+    # Create post-solve backup
+    if enable_backup and backup_manager:
+        backup_manager.create_backup(
+            input_path, output_path,
+            f"Post-solve results - {best_result.algorithm} - {len(final_state)} events"
+        )
+
+    return {
+        'result': best_result,
+        'final_state': final_state,
+        'conflicts': conflicts,
+        'quality_report': quality_report,
+        'preference_score': preferences.evaluate_schedule_quality(final_state, problem) if preferences else None
+    }
+
+
+def print_advanced_help():
+    """Print help for advanced features."""
+    help_text = """
+🚀 ADVANCED TIMETABLING FEATURES
+
+Enhanced Solve Function:
+  solve_from_json_advanced(
+      input_path="input.json", 
+      output_path="output.json",
+      compare_all=True,          # Run all algorithms
+      auto_html=True,            # Generate HTML automatically  
+      enable_validation=True,    # Quality analysis & conflict detection
+      enable_backup=True,        # Automatic backups
+      export_formats=['csv', 'ical', 'stats']  # Additional export formats
+  )
+
+Available Export Formats:
+  • csv         - Spreadsheet format
+  • ical        - Calendar format (Outlook/Google)
+  • xml         - Structured XML
+  • enhanced_json - JSON with statistics
+  • moodle      - Moodle course import
+  • teams       - Microsoft Teams integration
+  • stats       - Statistics report
+  • all         - Export all formats
+
+Preference Configuration (in input JSON):
+  {
+    "config": { ... },
+    "preferences": {
+      "teacher_preferences": [
+        {
+          "teacher_id": "T_MATH", 
+          "preferred_slots": ["Mon_08-10", "Tue_08-10"],
+          "weight": 0.7
+        }
+      ],
+      "lunch_break": {
+        "start_time": "12:00",
+        "end_time": "14:00", 
+        "weight": 0.8
+      },
+      "group_preferences": [
+        {
+          "group_id": "G1",
+          "type": "compact",
+          "weight": 0.6
+        }
+      ],
+      "avoid_late_classes": {
+        "cutoff_time": "18:00",
+        "weight": 0.5
+      }
+    },
+    "timeslots": [...],
+    ...
+  }
+
+Backup & Version Control:
+  from timetable_backup import TimetableBackupManager, VersionControl
+  
+  # Backup management
+  backup = TimetableBackupManager()
+  backup.create_backup("input.json", "output.json", "Description")
+  backup.list_backups()
+  backup.restore_backup("20251231_143022")
+  
+  # Version control
+  vc = VersionControl()
+  vc.commit_version(["input.json", "output.json"], "Version message")
+  vc.checkout_version("20251231_143022")
+
+Manual Analysis:
+  from timetable_conflicts import ConflictDetector
+  from timetable_validation import ScheduleValidator
+  
+  # Conflict analysis
+  detector = ConflictDetector(problem)
+  conflicts = detector.analyze_schedule(assignment)
+  
+  # Quality assessment  
+  validator = ScheduleValidator(problem)
+  report = validator.validate_and_assess(assignment)
+"""
+    print(help_text)
+
+
+# Import new advanced features
+try:
+    from timetable_preferences import PreferenceManager, load_preferences_from_json
+    from timetable_conflicts import ConflictDetector, generate_conflict_report
+    from timetable_validation import ScheduleValidator, generate_quality_report
+    from timetable_backup import TimetableBackupManager, auto_backup_wrapper
+    from timetable_enhanced_export import EnhancedTimetableExporter
+    ADVANCED_FEATURES = True
+except ImportError as e:
+    # Create dummy classes/functions for graceful fallback
+    class PreferenceManager:
+        def __init__(self): pass
+    class ConflictDetector:
+        def __init__(self, problem): pass
+    class ScheduleValidator:
+        def __init__(self, problem): pass
+    class TimetableBackupManager:
+        def __init__(self): pass
+    class EnhancedTimetableExporter:
+        def __init__(self, data): pass
+
+    def load_preferences_from_json(data): return PreferenceManager()
+    def generate_conflict_report(conflicts): return ""
+    def generate_quality_report(report): return ""
+    def auto_backup_wrapper(func): return func
+
+    print(f"⚠️ Advanced features not available: {e}")
+    ADVANCED_FEATURES = False
+
+
 if __name__ == "__main__":
-    solve_from_json("test/09_real_world_scenario.json", "timetable_output.json", compare_all=False)
+    # Enable advanced features for testing
+    if ADVANCED_FEATURES:
+        print("🚀 Running with ADVANCED FEATURES enabled")
+        solve_from_json_advanced(
+            "test/09_real_world_scenario.json",
+            "timetable_output.json",
+            compare_all=False,
+            enable_validation=True,
+            enable_backup=True,
+            export_formats=['csv', 'ical', 'stats']
+        )
+    else:
+        print("📝 Running with BASIC FEATURES only")
+        solve_from_json("test/09_real_world_scenario.json", "timetable_output.json", compare_all=False)
