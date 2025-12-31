@@ -17,7 +17,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Thu_08-10",
+      "timeslot_id": "Fri_16-1830",
       "room_id": "S13",
       "weeks": [
         1,
@@ -53,7 +53,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Mon_16-1830",
+      "timeslot_id": "Fri_14-16",
       "room_id": "S13",
       "weeks": [
         1,
@@ -125,7 +125,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Mon_14-16",
+      "timeslot_id": "Fri_08-10",
       "room_id": "S13",
       "weeks": [
         1,
@@ -161,7 +161,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Wed_10-1230",
+      "timeslot_id": "Tue_10-1230",
       "room_id": "S13",
       "weeks": [
         1,
@@ -197,7 +197,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Wed_08-10",
+      "timeslot_id": "Tue_08-10",
       "room_id": "S13",
       "weeks": [
         1,
@@ -233,7 +233,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Thu_16-1830",
+      "timeslot_id": "Wed_10-1230",
       "room_id": "S13",
       "weeks": [
         1,
@@ -269,7 +269,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Thu_14-16",
+      "timeslot_id": "Wed_08-10",
       "room_id": "S13",
       "weeks": [
         1,
@@ -377,7 +377,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Tue_16-1830",
+      "timeslot_id": "Mon_10-1230",
       "room_id": "S13",
       "weeks": [
         1,
@@ -413,7 +413,7 @@
       "group_ids": [
         "G1"
       ],
-      "timeslot_id": "Tue_14-16",
+      "timeslot_id": "Mon_08-10",
       "room_id": "S13",
       "weeks": [
         1,
