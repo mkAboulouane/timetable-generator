@@ -7,20 +7,20 @@
     { "id": "Tue_10-1230", "day": "Tue", "start": "10:30", "end": "12:30", "duration_min": 120 }
   ],
   "rooms": [
-    { "id": "R1", "capacity": 35, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] },
-    { "id": "R2", "capacity": 80, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+    { "id": "R1", "capacity": 35, "available": ["ALL"] },
+    { "id": "R2", "capacity": 80, "available": ["ALL"] }
   ],
   "teachers": [
-    { "id": "T_MATH", "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] },
+    { "id": "T_MATH", "available": ["ALL"] },
     { "id": "T_ALGO", "available": ["Mon_10-1230","Tue_10-1230"] },
-    { "id": "T_NET", "available": ["Mon_08-10","Tue_08-10"] }
+    { "id": "T_NET", "available": ["ALL", "-Mon_10-1230", "-Tue_10-1230"] }
   ],
   "sessions": [
     {
       "id": "CP-1-S1",
       "groups": [
-        { "id": "CP_G1", "size": 28, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] },
-        { "id": "CP_G2", "size": 27, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+        { "id": "CP_G1", "size": 28, "available": ["ALL"] },
+        { "id": "CP_G2", "size": 27, "available": ["ALL"] }
       ],
       "modules": [
         {
@@ -47,7 +47,7 @@
     {
       "id": "GI-S1",
       "groups": [
-        { "id": "GI_G1", "size": 34, "available": ["Mon_08-10","Mon_10-1230","Tue_08-10","Tue_10-1230"] }
+        { "id": "GI_G1", "size": 34, "available": ["ALL"] }
       ],
       "modules": [
         {

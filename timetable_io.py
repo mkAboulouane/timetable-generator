@@ -22,6 +22,7 @@ def _parse_week_ranges(values: List[str]) -> List[int]:
                 raise ValueError(f"Invalid range '{item}' (end < start).")
             weeks.extend(list(range(a, b + 1)))
         else:
+            print(item)
             weeks.append(int(item))
     return weeks
 
@@ -64,6 +65,39 @@ def parse_weeks(weeks_obj: Any, weeks_total: int) -> FrozenSet[int]:
     raise ValueError(f"Unknown weeks.mode '{mode}'. Use: all, list, ranges.")
 
 
+def parse_availability(available_obj: Any, all_timeslots: List[str]) -> FrozenSet[str]:
+    """
+    Parse availability field with support for "ALL" macro.
+
+    available_obj can be:
+      - None or [] => empty availability (no slots available)
+      - ["ALL"] => all available timeslots
+      - ["Mon_08-10", "Tue_10-12", ...] => specific timeslots
+      - ["ALL", "-Mon_08-10", "-Tue_10-12"] => all except specified (exclusion)
+    """
+    if not available_obj:
+        return frozenset()
+
+    if not isinstance(available_obj, list):
+        available_obj = [available_obj]
+
+    # Check if "ALL" is in the list
+    if "ALL" in available_obj:
+        # Start with all timeslots
+        result_set = set(all_timeslots)
+
+        # Remove any exclusions (items starting with "-")
+        for item in available_obj:
+            if isinstance(item, str) and item.startswith("-"):
+                exclude_slot = item[1:]  # Remove the "-" prefix
+                result_set.discard(exclude_slot)
+
+        return frozenset(result_set)
+    else:
+        # Regular list of specific timeslots
+        return frozenset(str(slot) for slot in available_obj)
+
+
 def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
     """
     JSON format (v3):
@@ -100,11 +134,14 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
         for t in data["timeslots"]
     ]
 
+    # Get all timeslot IDs for "ALL" macro
+    all_timeslot_ids = [t.id for t in timeslots]
+
     rooms = [
         Room(
             id=r["id"],
             capacity=int(r["capacity"]),
-            available=frozenset(r.get("available", [])),
+            available=parse_availability(r.get("available"), all_timeslot_ids),
         )
         for r in data["rooms"]
     ]
@@ -112,7 +149,7 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
     teachers = [
         Teacher(
             id=t["id"],
-            available=frozenset(t.get("available", [])),
+            available=parse_availability(t.get("available"), all_timeslot_ids),
         )
         for t in data["teachers"]
     ]
@@ -132,7 +169,7 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
             Group(
                 id=g["id"],
                 size=int(g["size"]),
-                available=frozenset(g.get("available", [])),
+                available=parse_availability(g.get("available"), all_timeslot_ids),
             )
             for g in s.get("groups", [])
         ]

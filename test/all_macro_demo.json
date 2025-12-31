@@ -1,0 +1,52 @@
+{
+  "config": {
+    "week_name": "ALL-Macro-Demo",
+    "weeks_total": 4,
+    "strategy": "dfs",
+    "use_mrv": true
+  },
+  "timeslots": [
+    { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Mon_10-12", "day": "Mon", "start": "10:00", "end": "12:00", "duration_min": 120 },
+    { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 },
+    { "id": "Fri_16-18", "day": "Fri", "start": "16:00", "end": "18:00", "duration_min": 120 }
+  ],
+  "rooms": [
+    { "id": "Room_A", "capacity": 50, "available": ["ALL"] }
+  ],
+  "teachers": [
+    { "id": "T_FULL_TIME", "available": ["ALL"] },
+    { "id": "T_NO_EVENINGS", "available": ["ALL", "-Fri_16-18"] },
+    { "id": "T_MONDAYS_ONLY", "available": ["Mon_08-10", "Mon_10-12"] }
+  ],
+  "sessions": [
+    {
+      "id": "DEMO_SESSION",
+      "groups": [
+        { "id": "DEMO_G1", "size": 30, "available": ["ALL"] }
+      ],
+      "modules": [
+        {
+          "id": "DEMO_MODULE",
+          "hours_per_week": 2,
+          "min_room_capacity": 30,
+          "events": [
+            {
+              "id": "DEMO_EVENT_1",
+              "teacher_id": "T_FULL_TIME",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120
+            },
+            {
+              "id": "DEMO_EVENT_2",
+              "teacher_id": "T_NO_EVENINGS",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

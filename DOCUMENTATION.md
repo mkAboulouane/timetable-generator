@@ -138,15 +138,24 @@ Defines all available rooms/venues.
 |-------|------|----------|-------------|
 | `id` | string | ✅ | Unique identifier (e.g., `"Room_A1"`) |
 | `capacity` | integer | ✅ | Maximum number of students |
-| `available` | array[string] | ❌ | List of timeslot IDs when room is available. If empty/missing, room is always available. |
+| `available` | array[string] | ❌ | List of timeslot IDs when room is available. Supports `"ALL"` macro. |
+
+#### Availability Patterns
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| **Empty/Missing** | Room never available | `"available": []` or omit field |
+| **Specific slots** | List exact timeslots | `"available": ["Mon_08-10", "Tue_10-12"]` |
+| **All slots** | Use `"ALL"` macro | `"available": ["ALL"]` |
+| **All except some** | Use exclusions with `-` | `"available": ["ALL", "-Sat_08-10", "-Sun_08-10"]` |
 
 **Example:**
 ```json
 {
   "rooms": [
-    { "id": "Amphi_A", "capacity": 200, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10"] },
-    { "id": "Room_101", "capacity": 40, "available": ["Mon_08-10", "Mon_10-12", "Mon_14-16", "Tue_08-10"] },
-    { "id": "Lab_Info", "capacity": 30, "available": ["Mon_14-16", "Tue_08-10"] }
+    { "id": "Amphi_A", "capacity": 200, "available": ["ALL"] },
+    { "id": "Room_101", "capacity": 40, "available": ["ALL", "-Fri_16-18", "-Sat_08-10"] },
+    { "id": "Lab_Info", "capacity": 30, "available": ["Mon_14-16", "Tue_08-10", "Wed_14-16"] }
   ]
 }
 ```
@@ -158,14 +167,23 @@ Defines all teachers and their availability.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | ✅ | Unique identifier (e.g., `"T_DUPONT"`) |
-| `available` | array[string] | ❌ | List of timeslot IDs when teacher is available. If empty/missing, teacher is never available. |
+| `available` | array[string] | ❌ | List of timeslot IDs when teacher is available. Supports `"ALL"` macro. |
+
+#### Availability Patterns
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| **Empty/Missing** | Teacher never available | `"available": []` or omit field |
+| **Specific slots** | List exact timeslots | `"available": ["Mon_08-10", "Tue_10-12"]` |
+| **All slots** | Use `"ALL"` macro | `"available": ["ALL"]` |
+| **All except some** | Use exclusions with `-` | `"available": ["ALL", "-Wed_08-10", "-Fri_14-16"]` |
 
 **Example:**
 ```json
 {
   "teachers": [
-    { "id": "T_MATH", "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] },
-    { "id": "T_INFO", "available": ["Mon_14-16", "Tue_08-10", "Tue_14-16"] },
+    { "id": "T_MATH", "available": ["ALL"] },
+    { "id": "T_INFO", "available": ["ALL", "-Wed_08-10", "-Fri_14-16"] },
     { "id": "T_PHYS", "available": ["Mon_08-10", "Wed_08-10", "Wed_10-12"] }
   ]
 }
@@ -209,14 +227,24 @@ Student groups belong to a session.
 |-------|------|----------|-------------|
 | `id` | string | ✅ | Unique group identifier (e.g., `"CP_G1"`) |
 | `size` | integer | ✅ | Number of students in the group |
-| `available` | array[string] | ❌ | List of timeslot IDs when group is available |
+| `available` | array[string] | ❌ | List of timeslot IDs when group is available. Supports `"ALL"` macro. |
+
+#### Availability Patterns
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| **Empty/Missing** | Group never available | `"available": []` or omit field |
+| **Specific slots** | List exact timeslots | `"available": ["Mon_08-10", "Tue_10-12"]` |
+| **All slots** | Use `"ALL"` macro | `"available": ["ALL"]` |
+| **All except some** | Use exclusions with `-` | `"available": ["ALL", "-Fri_16-18", "-Sat_08-10"]` |
 
 **Example:**
 ```json
 {
   "groups": [
-    { "id": "CP_G1", "size": 28, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10"] },
-    { "id": "CP_G2", "size": 30, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10"] }
+    { "id": "CP_G1", "size": 28, "available": ["ALL"] },
+    { "id": "CP_G2", "size": 30, "available": ["ALL", "-Fri_16-18"] },
+    { "id": "PART_TIME_G1", "size": 15, "available": ["Wed_18-20", "Sat_08-12"] }
   ]
 }
 ```
@@ -326,22 +354,23 @@ Events are the actual scheduled items (lectures, tutorials, labs).
     { "id": "Mon_08-10", "day": "Mon", "start": "08:00", "end": "10:00", "duration_min": 120 },
     { "id": "Mon_10-12", "day": "Mon", "start": "10:00", "end": "12:00", "duration_min": 120 },
     { "id": "Tue_08-10", "day": "Tue", "start": "08:00", "end": "10:00", "duration_min": 120 },
-    { "id": "Tue_10-12", "day": "Tue", "start": "10:00", "end": "12:00", "duration_min": 120 }
+    { "id": "Tue_10-12", "day": "Tue", "start": "10:00", "end": "12:00", "duration_min": 120 },
+    { "id": "Fri_16-18", "day": "Fri", "start": "16:00", "end": "18:00", "duration_min": 120 }
   ],
   "rooms": [
-    { "id": "Amphi_A", "capacity": 100, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] },
-    { "id": "Room_101", "capacity": 35, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] }
+    { "id": "Amphi_A", "capacity": 100, "available": ["ALL"] },
+    { "id": "Room_101", "capacity": 35, "available": ["ALL", "-Fri_16-18"] }
   ],
   "teachers": [
-    { "id": "T_MATH", "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] },
-    { "id": "T_INFO", "available": ["Mon_10-12", "Tue_10-12"] }
+    { "id": "T_MATH", "available": ["ALL"] },
+    { "id": "T_INFO", "available": ["ALL", "-Fri_16-18"] }
   ],
   "sessions": [
     {
       "id": "CP-Year1",
       "groups": [
-        { "id": "CP_G1", "size": 28, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] },
-        { "id": "CP_G2", "size": 30, "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12"] }
+        { "id": "CP_G1", "size": 28, "available": ["ALL"] },
+        { "id": "CP_G2", "size": 30, "available": ["ALL", "-Fri_16-18"] }
       ],
       "modules": [
         {
@@ -387,6 +416,56 @@ Events are the actual scheduled items (lectures, tutorials, labs).
 ---
 
 ## 3. Constraints & Behavior
+
+### 3.0 ALL Macro for Availability
+
+The `"ALL"` macro simplifies availability configuration by automatically expanding to all defined timeslots.
+
+#### Benefits:
+- **Reduces repetition**: No need to list every timeslot manually
+- **Maintenance-friendly**: Adding new timeslots automatically includes them
+- **Exclusion support**: Use `-prefix` to exclude specific slots
+
+#### Usage Patterns:
+
+| Scenario | Configuration | Result |
+|----------|---------------|---------|
+| **Always available** | `"available": ["ALL"]` | Available for all timeslots |
+| **Never weekends** | `"available": ["ALL", "-Sat_08-10", "-Sun_08-10"]` | All slots except Saturday/Sunday |
+| **Morning person** | `"available": ["ALL", "-Mon_16-18", "-Tue_16-18", "-Wed_16-18"]` | All slots except evening classes |
+| **Part-time teacher** | `"available": ["Mon_08-10", "Wed_10-12", "Fri_14-16"]` | Specific slots only |
+
+#### Example Comparison:
+
+**Before (verbose):**
+```json
+{
+  "teachers": [
+    {
+      "id": "T_MATH",
+      "available": [
+        "Mon_08-10", "Mon_10-12", "Mon_14-16", "Mon_16-18",
+        "Tue_08-10", "Tue_10-12", "Tue_14-16", "Tue_16-18",
+        "Wed_08-10", "Wed_10-12", "Wed_14-16", "Wed_16-18",
+        "Thu_08-10", "Thu_10-12", "Thu_14-16", "Thu_16-18",
+        "Fri_08-10", "Fri_10-12", "Fri_14-16"
+      ]
+    }
+  ]
+}
+```
+
+**After (concise):**
+```json
+{
+  "teachers": [
+    {
+      "id": "T_MATH", 
+      "available": ["ALL", "-Fri_16-18"]
+    }
+  ]
+}
+```
 
 ### 3.1 Hard Constraints
 
