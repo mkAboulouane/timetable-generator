@@ -2,6 +2,7 @@
   "config": {
     "week_name": "CP1-S1-P1",
     "weeks_total": 16,
+    "strategy": "dfs",
     "use_mrv": false
   },
   "timeslots": [
@@ -227,7 +228,7 @@
       ]
     },
     {
-      "id": "OUASSOU",
+      "id": "ANKHILI",
       "available": [
         "Mon_14-16",
         "Mon_16-1830",
@@ -241,7 +242,7 @@
       ]
     },
     {
-      "id": "TAOURIRTE",
+      "id": "TAOUDI",
       "available": [
         "Mon_14-16",
         "Mon_16-1830",
@@ -279,7 +280,7 @@
           },
           "events": [
             {
-              "id": "Cours",
+              "id": "Cours_AlgoPython",
               "teacher_id": "EZZAHI",
               "audience": {
                 "type": "all_groups"
@@ -290,8 +291,173 @@
               ]
             },
             {
-              "id": "TD",
+              "id": "TD_AlgoPython",
               "teacher_id": "EZZAHI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MÉCANIQUE DU POINT",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Cours_Mecanique",
+              "teacher_id": "FARAJI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
+            {
+              "id": "TD_Mecanique",
+              "teacher_id": "FARAJI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "LTC 1 - Français",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Cours_Francais",
+              "teacher_id": "KADDARI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
+            {
+              "id": "TD_Francais",
+              "teacher_id": "KADDARI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CHIMIE GÉNÉRALE",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Cours_Chimie",
+              "teacher_id": "CHAIBI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
+            {
+              "id": "TD_Chimie",
+              "teacher_id": "CHAIBI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ALGEBRE 1",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Cours_Algebre",
+              "teacher_id": "ANKHILI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
+            {
+              "id": "TD_Algebre",
+              "teacher_id": "ANKHILI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ANALYSE 1",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Cours_Analyse",
+              "teacher_id": "TAOUDI",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": [
+                "ALL"
+              ]
+            },
+            {
+              "id": "TD_Analyse",
+              "teacher_id": "TAOUDI",
               "audience": {
                 "type": "all_groups"
               },

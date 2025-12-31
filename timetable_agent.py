@@ -913,4 +913,4 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True)
 
 
 if __name__ == "__main__":
-    solve_from_json("test/09_real_world_scenario.json", "timetable_output.json")
+    solve_from_json("test/09_real_world_scenario.json", "timetable_output.json", compare_all=False)

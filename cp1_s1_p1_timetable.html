@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable - CP1-S1-P1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header .meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .header .meta-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .header .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .header .status.success {
+            background: #4CAF50;
+        }
+        .header .status.failure {
+            background: #f44336;
+        }
+        .filter-info {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .timetable-wrapper {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .timetable th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .timetable th.time-header {
+            width: 100px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .timetable td {
+            border: 1px solid #e0e0e0;
+            padding: 8px;
+            vertical-align: top;
+            min-height: 120px;
+            height: 120px;
+        }
+        .timetable td.time-cell {
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            vertical-align: middle;
+        }
+        .event {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .event-title {
+            font-weight: bold;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 4px;
+        }
+        .event-details {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+        .event-details div {
+            margin: 2px 0;
+        }
+        .event-weeks {
+            font-size: 0.75em;
+            opacity: 0.8;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .legend {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+        .legend h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .event:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 CP1-S1-P1</h1>
+            <div class="meta">
+                <span class="meta-item">📊 Strategy: dfs</span>
+                <span class="meta-item">📆 Total Weeks: 16</span>
+                <span class="meta-item">📝 Events: 12/12</span>
+            </div>
+            <div class="status success">SUCCESS</div>
+        </div>
+        
+        <div class="filter-info">
+            🔍 Showing: <strong>All Sessions & Weeks</strong>
+        </div>
+        
+        <div class="timetable-wrapper">
+            <table class="timetable">
+                <thead>
+                    <tr>
+                        <th class="time-header">Time</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-cell">08<br>to<br>10</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #2196F3;">
+                                <div class="event-title">TD_AlgoPython</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 EZZAHI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #4CAF50;">
+                                <div class="event-title">Cours_Algebre</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 ANKHILI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">10<br>to<br>1230</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #2196F3;">
+                                <div class="event-title">Cours_AlgoPython</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 EZZAHI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #FF9800;">
+                                <div class="event-title">Cours_Analyse</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 TAOUDI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">14<br>to<br>16</td>
+                        <td>
+                            <div class="event" style="background: #FF9800;">
+                                <div class="event-title">TD_Analyse</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 TAOUDI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #00BCD4;">
+                                <div class="event-title">TD_Mecanique</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 FARAJI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #E91E63;">
+                                <div class="event-title">TD_Francais</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 KADDARI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #9C27B0;">
+                                <div class="event-title">TD_Chimie</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 CHAIBI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">16<br>to<br>1830</td>
+                        <td>
+                            <div class="event" style="background: #4CAF50;">
+                                <div class="event-title">TD_Algebre</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 ANKHILI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #00BCD4;">
+                                <div class="event-title">Cours_Mecanique</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 FARAJI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #E91E63;">
+                                <div class="event-title">Cours_Francais</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 KADDARI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="event" style="background: #9C27B0;">
+                                <div class="event-title">Cours_Chimie</div>
+                                <div class="event-details">
+                                    <div>🏫 S13 (50 seats)</div>
+                                    <div>👨‍🏫 CHAIBI</div>
+                                    <div>👥 G1</div>
+                                </div>
+                                <div class="event-weeks">📆 Weeks: 1-16</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="legend">
+            <h3>📚 Module Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item"><div class="legend-color" style="background: #4CAF50;"></div><span>ALGEBRE 1</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #2196F3;"></div><span>Algorithmique et Programmation en Python</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #FF9800;"></div><span>ANALYSE 1</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #9C27B0;"></div><span>CHIMIE GÉNÉRALE</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #E91E63;"></div><span>LTC 1 - Français</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #00BCD4;"></div><span>MÉCANIQUE DU POINT</span></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Generated by Auto-Drive Timetable Agent
+        </div>
+    </div>
+</body>
+</html>
