@@ -321,12 +321,23 @@ Events are the actual scheduled items (lectures, tutorials, labs).
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | ✅ | Unique event identifier (e.g., `"CM_MATH101"`) |
+| `id` | string | ✅ | Event identifier (e.g., `"Cours"`, `"TD"`) - **can be repeated across modules** |
 | `teacher_id` | string | ✅ | ID of the teacher for this event |
 | `duration_min` | integer | ✅ | Duration in minutes (must match a timeslot duration) |
 | `audience` | object | ✅ | Specifies which groups attend |
 | `allowed_slots` | array[string] | ❌ | Restrict to specific timeslot IDs. Supports `"ALL"`/`"all"` macro. |
 | `weeks` | object | ❌ | Override module weeks for this event |
+
+#### Event ID Generation
+
+**Important:** Event IDs are automatically made unique by the system. You can use common names like `"Cours"` and `"TD"` in multiple modules.
+
+| Input | Generated Unique ID | Display Name |
+|-------|-------------------|--------------|
+| `"Cours"` in module `"MATH101"` | `"MATH101 - Cours"` | MATH101 - Cours |
+| `"TD"` in module `"MATH101"` | `"MATH101 - TD"` | MATH101 - TD |
+| `"Cours"` in module `"INFO101"` | `"INFO101 - Cours"` | INFO101 - Cours |
+| `"TP"` in module `"CHIMIE"` | `"CHIMIE - TP"` | CHIMIE - TP |
 
 #### Allowed Slots Patterns
 
@@ -389,7 +400,7 @@ Events are the actual scheduled items (lectures, tutorials, labs).
           "weeks": { "mode": "list", "values": [1, 3, 5, 7, 9, 11, 13, 15] },
           "events": [
             {
-              "id": "CM_MATH101",
+              "id": "Cours",
               "teacher_id": "T_MATH",
               "audience": { "type": "all_groups" },
               "duration_min": 120
@@ -403,13 +414,19 @@ Events are the actual scheduled items (lectures, tutorials, labs).
           "weeks": { "mode": "ranges", "values": ["1-8", "10-16"] },
           "events": [
             {
-              "id": "TD_INFO_G1",
+              "id": "Cours",
+              "teacher_id": "T_INFO",
+              "audience": { "type": "all_groups" },
+              "duration_min": 120
+            },
+            {
+              "id": "TD",
               "teacher_id": "T_INFO",
               "audience": { "type": "groups", "group_ids": ["CP_G1"] },
               "duration_min": 120
             },
             {
-              "id": "TD_INFO_G2",
+              "id": "TD",
               "teacher_id": "T_INFO",
               "audience": { "type": "groups", "group_ids": ["CP_G2"] },
               "duration_min": 120
@@ -421,6 +438,8 @@ Events are the actual scheduled items (lectures, tutorials, labs).
   ]
 }
 ```
+
+> **Note:** In this example, both modules use `"Cours"` and `"TD"` as event IDs. The system automatically generates unique names like `"MATH101 - Cours"`, `"INFO101 - Cours"`, `"INFO101 - TD"`, etc.
 
 ---
 

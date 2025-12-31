@@ -200,9 +200,13 @@ def load_input_json(path: str) -> Tuple[Dict[str, Any], TimetablingProblem]:
                         f"Use 'all_groups' or 'groups'."
                     )
 
+                # Generate unique event ID by combining module name with event type
+                original_event_id = e["id"]
+                unique_event_id = f"{module_id} - {original_event_id}"
+
                 events.append(
                     Event(
-                        id=e["id"],
+                        id=unique_event_id,
                         teacher_id=e["teacher_id"],
                         group_ids=tuple(group_ids),
                         duration_min=int(e["duration_min"]),

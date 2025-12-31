@@ -280,7 +280,7 @@
           },
           "events": [
             {
-              "id": "Cours_AlgoPython",
+              "id": "Cours",
               "teacher_id": "EZZAHI",
               "audience": {
                 "type": "all_groups"
@@ -291,7 +291,7 @@
               ]
             },
             {
-              "id": "TD_AlgoPython",
+              "id": "TD",
               "teacher_id": "EZZAHI",
               "audience": {
                 "type": "all_groups"
@@ -313,7 +313,7 @@
           },
           "events": [
             {
-              "id": "Cours_Mecanique",
+              "id": "Cours",
               "teacher_id": "FARAJI",
               "audience": {
                 "type": "all_groups"
@@ -324,7 +324,7 @@
               ]
             },
             {
-              "id": "TD_Mecanique",
+              "id": "TD",
               "teacher_id": "FARAJI",
               "audience": {
                 "type": "all_groups"
@@ -346,7 +346,7 @@
           },
           "events": [
             {
-              "id": "Cours_Francais",
+              "id": "Cours",
               "teacher_id": "KADDARI",
               "audience": {
                 "type": "all_groups"
@@ -357,7 +357,7 @@
               ]
             },
             {
-              "id": "TD_Francais",
+              "id": "TD",
               "teacher_id": "KADDARI",
               "audience": {
                 "type": "all_groups"
@@ -379,7 +379,7 @@
           },
           "events": [
             {
-              "id": "Cours_Chimie",
+              "id": "Cours",
               "teacher_id": "CHAIBI",
               "audience": {
                 "type": "all_groups"
@@ -390,7 +390,7 @@
               ]
             },
             {
-              "id": "TD_Chimie",
+              "id": "TD",
               "teacher_id": "CHAIBI",
               "audience": {
                 "type": "all_groups"
@@ -412,7 +412,7 @@
           },
           "events": [
             {
-              "id": "Cours_Algebre",
+              "id": "Cours",
               "teacher_id": "ANKHILI",
               "audience": {
                 "type": "all_groups"
@@ -423,7 +423,7 @@
               ]
             },
             {
-              "id": "TD_Algebre",
+              "id": "TD",
               "teacher_id": "ANKHILI",
               "audience": {
                 "type": "all_groups"
@@ -445,7 +445,7 @@
           },
           "events": [
             {
-              "id": "Cours_Analyse",
+              "id": "Cours",
               "teacher_id": "TAOUDI",
               "audience": {
                 "type": "all_groups"
@@ -456,7 +456,7 @@
               ]
             },
             {
-              "id": "TD_Analyse",
+              "id": "TD",
               "teacher_id": "TAOUDI",
               "audience": {
                 "type": "all_groups"
