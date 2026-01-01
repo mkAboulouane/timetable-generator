@@ -1312,12 +1312,14 @@ except ImportError as e:
 
 
 if __name__ == "__main__":
+    input_path = "test/09_real_world_scenario.json"
+    output_path = "timetable_output.json"
     # Enable advanced features for testing
     if ADVANCED_FEATURES:
         print("🚀 Running with ADVANCED FEATURES enabled")
         solve_from_json_advanced(
-            "test/09_real_world_scenario.json",
-            "timetable_output.json",
+            input_path,
+            output_path,
             compare_all=False,
             enable_validation=True,
             enable_backup=True,
@@ -1325,4 +1327,4 @@ if __name__ == "__main__":
         )
     else:
         print("📝 Running with BASIC FEATURES only")
-        solve_from_json("test/09_real_world_scenario.json", "timetable_output.json", compare_all=False)
+        solve_from_json(input_path, output_path, compare_all=False)
