@@ -352,6 +352,8 @@ def dfs_search(
     *,
     record_graph: bool = False,
     algorithm_label: str = "DFS",
+    max_iterations: int = 100000,
+    timeout: float = 300.0,
 ):
     algo_name = algorithm_label
     start_time = time.time()
@@ -381,6 +383,42 @@ def dfs_search(
         print("-" * 60)
 
     while frontier:
+        # Check timeout
+        elapsed = time.time() - start_time
+        if elapsed > timeout:
+            if verbose:
+                print(f"\n⏱️ TIMEOUT après {iteration} itérations ({elapsed:.2f}s)")
+            result = SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name,
+            )
+            if recorder is not None:
+                setattr(result, "graph", recorder)
+            return result
+
+        # Check max iterations
+        if iteration >= max_iterations:
+            elapsed = time.time() - start_time
+            if verbose:
+                print(f"\n⚠️ MAX ITERATIONS atteint ({max_iterations})")
+            result = SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name,
+            )
+            if recorder is not None:
+                setattr(result, "graph", recorder)
+            return result
+
         iteration += 1
         max_frontier = max(max_frontier, len(frontier))
         state = frontier.pop()
@@ -468,7 +506,7 @@ def dfs_search(
     return result
 
 
-def bfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
+def bfs_search(problem: TimetablingProblem, verbose: bool = True, max_iterations: int = 100000, timeout: float = 300.0) -> SearchResult:
     algo_name = "BFS"
     start_time = time.time()
     start = problem.initial_state
@@ -488,6 +526,35 @@ def bfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
         print("-" * 60)
 
     while frontier:
+        # Check timeout
+        elapsed = time.time() - start_time
+        if elapsed > timeout:
+            if verbose:
+                print(f"\n⏱️ TIMEOUT après {iteration} itérations ({elapsed:.2f}s)")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
+
+        # Check max iterations
+        if iteration >= max_iterations:
+            elapsed = time.time() - start_time
+            if verbose:
+                print(f"\n⚠️ MAX ITERATIONS atteint ({max_iterations})")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=len(visited),
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
         iteration += 1
         max_frontier = max(max_frontier, len(frontier))
         state = frontier.popleft()
@@ -542,7 +609,7 @@ def bfs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
     )
 
 
-def ucs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResult:
+def ucs_search(problem: TimetablingProblem, verbose: bool = True, max_iterations: int = 100000, timeout: float = 300.0) -> SearchResult:
     algo_name = "UCS"
     start_time = time.time()
     start = problem.initial_state
@@ -563,6 +630,35 @@ def ucs_search(problem: TimetablingProblem, verbose: bool = True) -> SearchResul
         print("-" * 60)
 
     while frontier:
+        # Check timeout
+        elapsed = time.time() - start_time
+        if elapsed > timeout:
+            if verbose:
+                print(f"\n⏱️ TIMEOUT après {iteration} itérations ({elapsed:.2f}s)")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
+
+        # Check max iterations
+        if iteration >= max_iterations:
+            elapsed = time.time() - start_time
+            if verbose:
+                print(f"\n⚠️ MAX ITERATIONS atteint ({max_iterations})")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
         iteration += 1
         max_frontier = max(max_frontier, len(frontier))
         g, state = heapq.heappop(frontier)
@@ -627,7 +723,7 @@ def h_zero(state: AssignmentTuple) -> float:
     return 0.0
 
 
-def a_star_search(problem: TimetablingProblem, h=h_zero, verbose: bool = True) -> SearchResult:
+def a_star_search(problem: TimetablingProblem, h=h_zero, verbose: bool = True, max_iterations: int = 100000, timeout: float = 300.0) -> SearchResult:
     algo_name = "A*"
     start_time = time.time()
     start = problem.initial_state
@@ -648,6 +744,35 @@ def a_star_search(problem: TimetablingProblem, h=h_zero, verbose: bool = True) -
         print("-" * 60)
 
     while frontier:
+        # Check timeout
+        elapsed = time.time() - start_time
+        if elapsed > timeout:
+            if verbose:
+                print(f"\n⏱️ TIMEOUT après {iteration} itérations ({elapsed:.2f}s)")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
+
+        # Check max iterations
+        if iteration >= max_iterations:
+            elapsed = time.time() - start_time
+            if verbose:
+                print(f"\n⚠️ MAX ITERATIONS atteint ({max_iterations})")
+            return SearchResult(
+                path=None,
+                iterations=iteration,
+                nodes_explored=explored_count,
+                max_frontier_size=max_frontier,
+                final_cost=float('inf'),
+                elapsed_time=elapsed,
+                algorithm=algo_name
+            )
         iteration += 1
         max_frontier = max(max_frontier, len(frontier))
         f, state = heapq.heappop(frontier)
@@ -1320,11 +1445,11 @@ if __name__ == "__main__":
         solve_from_json_advanced(
             input_path,
             output_path,
-            compare_all=False,
+            compare_all=True,
             enable_validation=True,
             enable_backup=True,
             export_formats=['csv', 'ical', 'stats']
         )
     else:
         print("📝 Running with BASIC FEATURES only")
-        solve_from_json(input_path, output_path, compare_all=False)
+        solve_from_json(input_path, output_path, compare_all=True)

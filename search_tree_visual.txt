@@ -1,0 +1,236 @@
+================================================================================
+         SEARCH TREE VISUALIZATION - TIMETABLING AGENT
+================================================================================
+
+SIMPLIFIED EXAMPLE: Scheduling 3 events with 2 teachers
+
+PROBLEM SETUP:
+--------------
+Events:
+  E1 = "Math-Cours"     (Teacher: PROF_A, Duration: 2h, Weeks: 1-16)
+  E2 = "Math-TD"        (Teacher: PROF_A, Duration: 2h, Weeks: 1-16)
+  E3 = "Physics-Cours"  (Teacher: PROF_B, Duration: 2h, Weeks: 1-16)
+
+Timeslots:
+  Mon_08-10    (Monday 08:00-10:00)
+  Mon_10-12    (Monday 10:00-12:00)
+  Tue_08-10    (Tuesday 08:00-10:00)
+
+Rooms:
+  S11 (Capacity: 40)
+  S12 (Capacity: 40)
+
+Teacher Availability:
+  PROF_A: Mon_08-10, Mon_10-12, Tue_08-10
+  PROF_B: Mon_08-10, Tue_08-10
+
+
+SEARCH TREE (Showing first few levels):
+================================================================================
+
+Level 0: INITIAL STATE
+┌─────────────────────────────────────────┐
+│  ROOT: []                               │
+│  (No events scheduled)                  │
+│                                         │
+│  g(n) = 0                               │
+│  h(n) = 3 (3 events remaining)          │
+│  f(n) = 0 + 3 = 3                       │
+└─────────────────────────────────────────┘
+         │
+         │  Select first event: E1 (Math-Cours)
+         │  Compatible: Mon_08-10, Mon_10-12, Tue_08-10
+         │  Rooms: S11, S12
+         │  Actions: 3 slots × 2 rooms = 6 possible assignments
+         │
+         ├────────────────┬────────────────┬────────────────┬───────────────┬───────────────┐
+         │                │                │                │               │               │
+         V                V                V                V               V               V
+
+Level 1: ASSIGN E1
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ E1: Mon_08,S11   │  │ E1: Mon_08,S12   │  │ E1: Mon_10,S11   │  │ E1: Mon_10,S12   │  │ E1: Tue_08,S11   │  │ E1: Tue_08,S12   │
+│                  │  │                  │  │                  │  │                  │  │                  │  │                  │
+│ g(n) = 1         │  │ g(n) = 1         │  │ g(n) = 1         │  │ g(n) = 1         │  │ g(n) = 1         │  │ g(n) = 1         │
+│ h(n) = 2         │  │ h(n) = 2         │  │ h(n) = 2         │  │ h(n) = 2         │  │ h(n) = 2         │  │ h(n) = 2         │
+│ f(n) = 3         │  │ f(n) = 3         │  │ f(n) = 3         │  │ f(n) = 3         │  │ f(n) = 3         │  │ f(n) = 3         │
+└──────────────────┘  └──────────────────┘  └──────────────────┘  └──────────────────┘  └──────────────────┘  └──────────────────┘
+         │
+         │ DFS picks the first action and goes deep
+         │ BFS would explore all level-1 nodes first
+         │ A* picks lowest f(n) (all tied, so arbitrary)
+         │
+         │ Assign E2 (Math-TD) - must avoid PROF_A conflicts
+         │ E1 is at Mon_08-10, so E2 can use Mon_10-12 or Tue_08-10
+         │
+         ├─────────────┬─────────────┬─────────────┬─────────────┐
+         V             V             V             V             V
+
+Level 2: ASSIGN E2
+┌──────────────────────────┐  ┌──────────────────────────┐  ┌──────────────────────────┐  ┌──────────────────────────┐
+│ E1: Mon_08,S11           │  │ E1: Mon_08,S11           │  │ E1: Mon_08,S11           │  │ E1: Mon_08,S11           │
+│ E2: Mon_08,S11           │  │ E2: Mon_08,S12           │  │ E2: Mon_10,S11           │  │ E2: Mon_10,S12           │
+│                          │  │                          │  │                          │  │                          │
+│ ❌ INVALID!              │  │ ❌ INVALID!              │  │ ✅ VALID                 │  │ ✅ VALID                 │
+│ (Room conflict)          │  │ (Teacher conflict -      │  │                          │  │                          │
+│ Same timeslot & room     │  │  same timeslot, weeks    │  │ g(n) = 2                 │  │ g(n) = 2                 │
+│                          │  │  overlap)                │  │ h(n) = 1                 │  │ h(n) = 1                 │
+│ PRUNED - not explored    │  │ PRUNED - not explored    │  │ f(n) = 3                 │  │ f(n) = 3                 │
+└──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+                                                                       │                          │
+                                                                       │                          │
+                                                                       │                          │
+                                              ┌────────────────────────┴─────────────┬────────────┴──────────────┐
+                                              │                                      │                           │
+                                              V                                      V                           V
+
+Level 3: ASSIGN E3
+┌─────────────────────────────────┐  ┌─────────────────────────────────┐  ┌─────────────────────────────────┐
+│ E1: Mon_08,S11                  │  │ E1: Mon_08,S11                  │  │ E1: Mon_08,S11                  │
+│ E2: Mon_10,S11                  │  │ E2: Mon_10,S11                  │  │ E2: Mon_10,S12                  │
+│ E3: Mon_08,S11                  │  │ E3: Mon_08,S12                  │  │ E3: Mon_08,S11                  │
+│                                 │  │                                 │  │                                 │
+│ ❌ INVALID!                     │  │ ✅ GOAL FOUND! 🎯              │  │ ❌ INVALID!                     │
+│ (Room conflict with E1)         │  │                                 │  │ (Room conflict with E1)         │
+│                                 │  │ Complete schedule:              │  │                                 │
+│ PRUNED                          │  │ - Mon 08-10: Math-Cours (S12)   │  │ PRUNED                          │
+│                                 │  │            Physics-Cours (S11)  │  │                                 │
+│                                 │  │ - Mon 10-12: Math-TD (S11)      │  │                                 │
+│                                 │  │                                 │  │                                 │
+│                                 │  │ g(n) = 3  h(n) = 0  f(n) = 3    │  │                                 │
+└─────────────────────────────────┘  └─────────────────────────────────┘  └─────────────────────────────────┘
+
+
+================================================================================
+ALGORITHM COMPARISON - Node Exploration Order
+================================================================================
+
+Given the tree above, here's how each algorithm explores it:
+
+1. DFS (Depth-First Search) - Using a STACK
+────────────────────────────────────────────────────────
+   Stack (Last In, First Out):
+
+   Step 1: Push ROOT → Stack: [ROOT]
+   Step 2: Pop ROOT, push children (reverse order) → Stack: [E1:Tue_08,S12, ..., E1:Mon_08,S11]
+   Step 3: Pop E1:Mon_08,S11, push its children → Stack: [..., E1+E2:Mon_10,S12, E1+E2:Mon_10,S11, ...]
+   Step 4: Pop E1+E2:Mon_10,S11, push its children → Stack: [..., E1+E2+E3:Mon_08,S12, E1+E2+E3:Mon_08,S11]
+   Step 5: Pop E1+E2+E3:Mon_08,S11 → INVALID (pruned)
+   Step 6: Pop E1+E2+E3:Mon_08,S12 → GOAL FOUND! ✅
+
+   Nodes explored: ~4-6
+   Result: First valid solution found (fast but not guaranteed optimal)
+
+
+2. BFS (Breadth-First Search) - Using a QUEUE
+────────────────────────────────────────────────────────
+   Queue (First In, First Out):
+
+   Step 1: Enqueue ROOT → Queue: [ROOT]
+   Step 2: Dequeue ROOT, enqueue all level-1 nodes → Queue: [E1:Mon_08,S11, E1:Mon_08,S12, E1:Mon_10,S11, E1:Mon_10,S12, E1:Tue_08,S11, E1:Tue_08,S12]
+   Step 3: Dequeue E1:Mon_08,S11, enqueue valid children → Queue: [E1:Mon_08,S12, ..., E1+E2:Mon_10,S11, E1+E2:Mon_10,S12, ...]
+   Step 4: Continue dequeuing level-1, enqueuing level-2 → Queue: [...all level-2 nodes...]
+   Step 5: Dequeue E1+E2:Mon_10,S11, enqueue level-3 → Queue: [..., E1+E2+E3:Mon_08,S11, E1+E2+E3:Mon_08,S12, ...]
+   Step 6: Dequeue until E1+E2+E3:Mon_08,S12 → GOAL FOUND! ✅
+
+   Nodes explored: ~12-15
+   Result: Optimal solution (minimum depth = 3), but more nodes explored
+
+
+3. UCS (Uniform Cost Search) - Using a PRIORITY QUEUE (by g)
+────────────────────────────────────────────────────────────────
+   Priority Queue ordered by g(n):
+
+   Step 1: ROOT (g=0)
+   Step 2: Expand ROOT → Add all level-1 (g=1)
+   Step 3: Expand nodes with g=1 → Add level-2 (g=2)
+   Step 4: Expand nodes with g=2 → Add level-3 (g=3)
+   Step 5: First goal found has g=3 → GOAL FOUND! ✅
+
+   Nodes explored: ~12-15 (same as BFS with uniform costs)
+   Result: Optimal solution (minimum cost = 3)
+
+
+4. A* Search - Using a PRIORITY QUEUE (by f = g + h)
+────────────────────────────────────────────────────────
+   Priority Queue ordered by f(n) = g(n) + h(n):
+   h(n) = number of unassigned events
+
+   Step 1: ROOT (g=0, h=3, f=3)
+   Step 2: Expand ROOT → Add level-1 (g=1, h=2, f=3)
+   Step 3: All level-1 have f=3, expand first → Add level-2 (g=2, h=1, f=3)
+   Step 4: All level-2 have f=3, expand first → Add level-3 (g=3, h=0, f=3)
+   Step 5: E1+E2+E3:Mon_08,S12 has f=3 → GOAL FOUND! ✅
+
+   Nodes explored: ~8-10 (fewer than BFS due to heuristic guidance)
+   Result: Optimal solution (f=3), more efficient than BFS
+
+
+================================================================================
+ACTUAL TRACE FOR YOUR TEST FILE (13 events)
+================================================================================
+
+Your output showed:
+  Algorithm: DFS
+  Iterations: 101
+  Cost: 13
+  Solution: All 13 events assigned
+
+The actual search tree had:
+  - Level 0: 1 node (ROOT)
+  - Level 1: 6 nodes (first event has 6 compatible slot×room combinations)
+  - Level 2: Varies (depends on conflicts)
+  - ...
+  - Level 13: GOAL states
+
+DFS explored ~101 nodes before finding a complete valid schedule.
+BFS/UCS would explore more nodes but guarantee optimality.
+A* would explore fewer nodes with a good heuristic.
+
+
+================================================================================
+VISUAL SUMMARY OF FRONTIER MANAGEMENT
+================================================================================
+
+DFS (Stack - LIFO):
+┌─────────────┐
+│   Node 5    │ ← Pop (most recently added)
+│   Node 4    │
+│   Node 3    │
+│   Node 2    │
+│   Node 1    │ ← Push (bottom)
+└─────────────┘
+
+BFS (Queue - FIFO):
+┌─────────────────────────────────────┐
+│ Node 1 → Node 2 → Node 3 → Node 4 → Node 5 │
+│ ↑ Dequeue                    Enqueue ↑      │
+└─────────────────────────────────────┘
+
+UCS/A* (Priority Queue - by cost/f):
+┌──────────────────────────┐
+│ Node 2 (cost=1.5)        │ ← Pop (lowest cost)
+│ Node 5 (cost=2.0)        │
+│ Node 1 (cost=2.5)        │
+│ Node 3 (cost=3.0)        │
+│ Node 4 (cost=3.5)        │ ← Push (highest cost)
+└──────────────────────────┘
+
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+1. ✅ All algorithms find valid schedules, but exploration differs
+2. 🎯 DFS is fastest for "any solution" but may miss better ones
+3. 📏 BFS/UCS guarantee optimal (minimum cost) solutions
+4. 🚀 A* combines optimality with efficiency when h is admissible
+5. 🌳 Preprocessing (compatible domains) drastically reduces tree size
+6. ✂️ Conflict checking prunes invalid branches early
+7. 🎲 MRV heuristic reduces branching factor by 50-80%
+
+Without constraint checking: 60^13 ≈ 10^23 possible nodes
+With smart pruning: Only ~101 nodes explored (reduction factor: 10^21)!
+
+================================================================================
+

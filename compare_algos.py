@@ -33,23 +33,40 @@ from timetable_agent import (
 from search_graph import write_text, try_render_graphviz
 
 
-def run_one(algo: str, problem):
-    if algo == "dfs":
-        return dfs_search(problem, verbose=False, record_graph=True, algorithm_label="DFS")
-    if algo == "bfs":
-        # (graphs not implemented for bfs/ucs/a* in this repo yet)
-        return bfs_search(problem, verbose=False)
-    if algo == "ucs":
-        return ucs_search(problem, verbose=False)
-    if algo in ("astar", "a*", "a_star"):
-        return a_star_search(problem, h_zero, verbose=False)
-    raise ValueError(algo)
+def run_one(algo: str, problem, max_iterations: int = 100000, timeout: float = 300.0):
+    """Run one algorithm with timeout and iteration limits to prevent blocking."""
+    try:
+        if algo == "dfs":
+            return dfs_search(problem, verbose=False, record_graph=True, algorithm_label="DFS",
+                            max_iterations=max_iterations, timeout=timeout)
+        if algo == "bfs":
+            return bfs_search(problem, verbose=False, max_iterations=max_iterations, timeout=timeout)
+        if algo == "ucs":
+            return ucs_search(problem, verbose=False, max_iterations=max_iterations, timeout=timeout)
+        if algo in ("astar", "a*", "a_star"):
+            return a_star_search(problem, h_zero, verbose=False, max_iterations=max_iterations, timeout=timeout)
+        raise ValueError(algo)
+    except Exception as e:
+        print(f"⚠️ Algorithm {algo} failed with error: {e}")
+        # Return a failed SearchResult
+        from timetable_agent import SearchResult
+        return SearchResult(
+            path=None,
+            iterations=0,
+            nodes_explored=0,
+            max_frontier_size=0,
+            final_cost=float('inf'),
+            elapsed_time=0.0,
+            algorithm=algo.upper()
+        )
 
 
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("input_json")
     p.add_argument("--graphs", action="store_true", help="Export DFS search graph (DOT + image if possible)")
+    p.add_argument("--timeout", type=float, default=300.0, help="Timeout in seconds per algorithm (default: 300s = 5min)")
+    p.add_argument("--max-iterations", type=int, default=100000, help="Maximum iterations per algorithm (default: 100000)")
     args = p.parse_args()
 
     input_path = args.input_json
@@ -62,15 +79,30 @@ def main() -> int:
     algos = ["dfs", "bfs", "ucs", "a_star"]
     results = []
 
+    print(f"\n{'='*70}")
+    print(f"  COMPARING ALGORITHMS: {case_name}")
+    print(f"{'='*70}")
+    print(f"  Timeout: {args.timeout}s | Max iterations: {args.max_iterations}")
+    print(f"  Output directory: {out_dir.resolve()}")
+    print(f"{'='*70}\n")
+
     for a in algos:
+        print(f"Running {a.upper()}...", end=" ", flush=True)
+
         # Reload a fresh problem each time (clean state)
         _, problem_i = load_input_json(input_path)
 
-        res = run_one(a, problem_i)
+        res = run_one(a, problem_i, max_iterations=args.max_iterations, timeout=args.timeout)
         results.append(res)
 
         final_state = None if res.path is None else res.path[-1]
         status = "success" if final_state is not None else "failure"
+
+        # Print immediate feedback
+        if status == "success":
+            print(f"✅ SUCCESS ({res.elapsed_time:.2f}s, {res.nodes_explored} nodes)")
+        else:
+            print(f"❌ FAILED ({res.elapsed_time:.2f}s, {res.nodes_explored} nodes)")
 
         out_json = out_dir / f"{a}.output.json"
         export_output_json(
@@ -91,12 +123,17 @@ def main() -> int:
                 try_render_graphviz(str(dot_path), str(img_path))
 
     # Print summary
-    print("\n=== Comparison summary ===")
+    print("\n" + "="*90)
+    print("  COMPARISON SUMMARY")
+    print("="*90)
+    print(f"{'Algo':<6} | {'Status':<7} | {'Iterations':>10} | {'Explored':>10} | {'Frontier':>10} | {'Time':>10} | {'Cost':>8}")
+    print("-"*90)
     for r in results:
-        ok = "OK" if r.path is not None else "FAIL"
+        ok = "SUCCESS" if r.path is not None else "FAILED"
+        cost_str = f"{r.final_cost:.1f}" if r.final_cost != float('inf') else "∞"
         print(
-            f"{r.algorithm:>4} | {ok:>4} | iterations={r.iterations:>6} | explored={r.nodes_explored:>6} | "
-            f"max_frontier={r.max_frontier_size:>6} | time={r.elapsed_time:.4f}s | cost={r.final_cost}"
+            f"{r.algorithm:<6} | {ok:<7} | {r.iterations:>10} | {r.nodes_explored:>10} | "
+            f"{r.max_frontier_size:>10} | {r.elapsed_time:>9.3f}s | {cost_str:>8}"
         )
 
     print(f"\nWrote outputs under: {out_dir.resolve()}")

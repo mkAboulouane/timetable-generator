@@ -5,8 +5,8 @@
     "strategy": "dfs",
     "use_mrv": false,
     "status": "success",
-    "events_total": 12,
-    "events_scheduled": 12
+    "events_total": 13,
+    "events_scheduled": 13
   },
   "assignments": [
     {
@@ -440,6 +440,42 @@
       "min_room_capacity": 40,
       "required_capacity": 40,
       "room_capacity": 50
+    },
+    {
+      "event_id": "Mécanique de solide - Cours",
+      "session_id": "S2",
+      "module_id": "Mécanique de solide",
+      "teacher_id": "FARAJI",
+      "group_ids": [
+        "G2"
+      ],
+      "timeslot_id": "Wed_14-16",
+      "room_id": "S12",
+      "weeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 2.0,
+      "demand": 40,
+      "min_room_capacity": 40,
+      "required_capacity": 40,
+      "room_capacity": 40
     }
   ]
 }

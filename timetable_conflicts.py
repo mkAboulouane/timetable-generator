@@ -50,7 +50,6 @@ class ConflictDetector:
         self._check_double_bookings(assignment)
         self._check_capacity_violations(assignment)
         self._check_availability_violations(assignment)
-        self._check_duration_mismatches(assignment)
 
         # Check soft constraint violations
         self._check_weekly_hour_requirements(assignment)

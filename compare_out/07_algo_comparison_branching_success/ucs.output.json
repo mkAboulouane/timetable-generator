@@ -10,7 +10,7 @@
   },
   "assignments": [
     {
-      "event_id": "E_CM_SHARED",
+      "event_id": "LECTURES - E_CM_SHARED",
       "session_id": "S1",
       "module_id": "LECTURES",
       "teacher_id": "T_SHARED",
@@ -38,13 +38,16 @@
         15,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 0.0,
       "demand": 55,
       "min_room_capacity": 55,
       "required_capacity": 55,
       "room_capacity": 120
     },
     {
-      "event_id": "E_OPT_G1",
+      "event_id": "OPTIONAL - E_OPT_G1",
       "session_id": "S1",
       "module_id": "OPTIONAL",
       "teacher_id": "T_OPT",
@@ -59,13 +62,16 @@
         3,
         4
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 0.0,
       "demand": 28,
       "min_room_capacity": 30,
       "required_capacity": 30,
       "room_capacity": 120
     },
     {
-      "event_id": "E_OPT_G2",
+      "event_id": "OPTIONAL - E_OPT_G2",
       "session_id": "S1",
       "module_id": "OPTIONAL",
       "teacher_id": "T_OPT",
@@ -80,13 +86,16 @@
         3,
         4
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 0.0,
       "demand": 27,
       "min_room_capacity": 30,
       "required_capacity": 30,
       "room_capacity": 120
     },
     {
-      "event_id": "E_TD_G1",
+      "event_id": "TUTORIALS - E_TD_G1",
       "session_id": "S1",
       "module_id": "TUTORIALS",
       "teacher_id": "T_SHARED",
@@ -113,13 +122,16 @@
         15,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 0.0,
       "demand": 28,
       "min_room_capacity": 30,
       "required_capacity": 30,
       "room_capacity": 35
     },
     {
-      "event_id": "E_TD_G2",
+      "event_id": "TUTORIALS - E_TD_G2",
       "session_id": "S1",
       "module_id": "TUTORIALS",
       "teacher_id": "T_SHARED",
@@ -146,6 +158,9 @@
         15,
         16
       ],
+      "duration_min": 120,
+      "duration_hours": 2.0,
+      "module_hours_per_week": 0.0,
       "demand": 27,
       "min_room_capacity": 30,
       "required_capacity": 30,

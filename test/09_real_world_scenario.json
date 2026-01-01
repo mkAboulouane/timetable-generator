@@ -2,7 +2,6 @@
   "config": {
     "week_name": "CP1-S1-P1",
     "weeks_total": 16,
-    "strategy": "dfs",
     "use_mrv": false
   },
   "timeslots": [

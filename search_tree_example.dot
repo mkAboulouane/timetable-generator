@@ -1,0 +1,67 @@
+digraph SearchTree {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    // Define nodes
+    root [label="ROOT\n[]\ng=0, h=3, f=3", fillcolor=lightblue, style="rounded,filled"];
+
+    // Level 1 - Assign E1
+    e1_mon08_s11 [label="E1: Mon_08-10, S11\ng=1, h=2, f=3", fillcolor=lightgreen, style="rounded,filled"];
+    e1_mon08_s12 [label="E1: Mon_08-10, S12\ng=1, h=2, f=3", fillcolor=lightgreen, style="rounded,filled"];
+    e1_mon10_s11 [label="E1: Mon_10-12, S11\ng=1, h=2, f=3", fillcolor=lightgreen, style="rounded,filled"];
+    e1_other [label="... (3 more options)", fillcolor=lightgray, style="rounded,filled,dashed"];
+
+    // Level 2 - Assign E2 (from first branch)
+    e12_conflict1 [label="E1: Mon_08, S11\nE2: Mon_08, S11\n❌ Room Conflict", fillcolor=red, style="rounded,filled", fontcolor=white];
+    e12_conflict2 [label="E1: Mon_08, S11\nE2: Mon_08, S12\n❌ Teacher Conflict", fillcolor=red, style="rounded,filled", fontcolor=white];
+    e12_valid1 [label="E1: Mon_08, S11\nE2: Mon_10, S11\n✅ Valid\ng=2, h=1, f=3", fillcolor=lightgreen, style="rounded,filled"];
+    e12_valid2 [label="E1: Mon_08, S11\nE2: Mon_10, S12\n✅ Valid\ng=2, h=1, f=3", fillcolor=lightgreen, style="rounded,filled"];
+    e12_valid3 [label="E1: Mon_08, S11\nE2: Tue_08, S11\n✅ Valid\ng=2, h=1, f=3", fillcolor=lightgreen, style="rounded,filled"];
+
+    // Level 3 - Assign E3 (from one valid branch)
+    e123_conflict [label="E1: Mon_08, S11\nE2: Mon_10, S11\nE3: Mon_08, S11\n❌ Room Conflict", fillcolor=red, style="rounded,filled", fontcolor=white];
+    e123_goal [label="E1: Mon_08, S11\nE2: Mon_10, S11\nE3: Mon_08, S12\n🎯 GOAL!\ng=3, h=0, f=3", fillcolor=gold, style="rounded,filled"];
+
+    // Edges
+    root -> e1_mon08_s11 [label="Action:\nAssign E1"];
+    root -> e1_mon08_s12;
+    root -> e1_mon10_s11;
+    root -> e1_other [style=dashed];
+
+    e1_mon08_s11 -> e12_conflict1 [label="Invalid\nPruned", color=red, style=dashed];
+    e1_mon08_s11 -> e12_conflict2 [label="Invalid\nPruned", color=red, style=dashed];
+    e1_mon08_s11 -> e12_valid1 [label="Valid"];
+    e1_mon08_s11 -> e12_valid2 [label="Valid"];
+    e1_mon08_s11 -> e12_valid3 [label="Valid"];
+
+    e12_valid1 -> e123_conflict [label="Invalid\nPruned", color=red, style=dashed];
+    e12_valid1 -> e123_goal [label="Valid", color=green, penwidth=2];
+
+    // Legend
+    legend [shape=plaintext, label=<
+        <table border="0" cellborder="1" cellspacing="0">
+        <tr><td colspan="2"><b>Legend</b></td></tr>
+        <tr><td bgcolor="lightblue">Initial State</td><td>Root node (empty)</td></tr>
+        <tr><td bgcolor="lightgreen">Valid State</td><td>No conflicts</td></tr>
+        <tr><td bgcolor="red"><font color="white">Invalid State</font></td><td>Conflicts detected</td></tr>
+        <tr><td bgcolor="gold">Goal State</td><td>All events assigned</td></tr>
+        <tr><td>g(n)</td><td>Cost from start</td></tr>
+        <tr><td>h(n)</td><td>Estimated cost to goal</td></tr>
+        <tr><td>f(n)</td><td>g(n) + h(n)</td></tr>
+        </table>
+    >];
+
+    // Algorithm notes
+    notes [shape=plaintext, label=<
+        <table border="0" cellborder="1" cellspacing="0">
+        <tr><td colspan="2"><b>Algorithm Exploration</b></td></tr>
+        <tr><td><b>DFS</b></td><td>Goes deep first (left branch)</td></tr>
+        <tr><td><b>BFS</b></td><td>Explores all level 1, then level 2</td></tr>
+        <tr><td><b>UCS</b></td><td>Expands by lowest g(n)</td></tr>
+        <tr><td><b>A*</b></td><td>Expands by lowest f(n)=g+h</td></tr>
+        </table>
+    >];
+
+    {rank=same; legend; notes;}
+}
+

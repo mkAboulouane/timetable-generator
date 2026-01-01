@@ -1,0 +1,14 @@
+Event,Module,Teacher,Groups,Day,Start Time,End Time,Room,Duration (hours),Weeks,Students,Room Capacity,Session,Module Hours/Week,Required Capacity
+ALGEBRE 1 - Cours,ALGEBRE 1,ANKHILI,G1,Fri,16,1830,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+ALGEBRE 1 - TD,ALGEBRE 1,ANKHILI,G1,Fri,14,16,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+ANALYSE 1 - Cours,ANALYSE 1,TAOUDI,G1,Thu,10,1230,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+ANALYSE 1 - TD,ANALYSE 1,TAOUDI,G1,Fri,08,10,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+Algorithmique et Programmation en Python - Cours,Algorithmique et Programmation en Python,EZZAHI,G1,Tue,10,1230,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+Algorithmique et Programmation en Python - TD,Algorithmique et Programmation en Python,EZZAHI,G1,Tue,08,10,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+CHIMIE GÉNÉRALE - Cours,CHIMIE GÉNÉRALE,CHAIBI,G1,Wed,10,1230,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+CHIMIE GÉNÉRALE - TD,CHIMIE GÉNÉRALE,CHAIBI,G1,Wed,08,10,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+LTC 1 - Français - Cours,LTC 1 - Français,KADDARI,G1,Wed,16,1830,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+LTC 1 - Français - TD,LTC 1 - Français,KADDARI,G1,Wed,14,16,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+MÉCANIQUE DU POINT - Cours,MÉCANIQUE DU POINT,FARAJI,G1,Mon,10,1230,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+MÉCANIQUE DU POINT - TD,MÉCANIQUE DU POINT,FARAJI,G1,Mon,08,10,S13,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,50,S1,4.0,40
+Mécanique de solide - Cours,Mécanique de solide,FARAJI,G2,Wed,14,16,S12,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,S2,2.0,40
