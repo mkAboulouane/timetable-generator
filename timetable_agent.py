@@ -964,7 +964,43 @@ def print_comparison_table(results: List[SearchResult]):
     print()
 
 
-def solve_from_json(input_path: str, output_path: str, compare_all: bool = True, auto_html: bool = True):
+def _export_search_graph(graph, algorithm_name: str, input_path: str):
+    """
+    Export search graph to DOT and PNG files.
+
+    Args:
+        graph: SearchGraphRecorder instance
+        algorithm_name: Name of the algorithm (e.g., 'dfs', 'bfs')
+        input_path: Path to input file (used to derive output filename)
+    """
+    try:
+        from search_graph import write_text, try_render_graphviz
+        from pathlib import Path
+
+        # Derive base name from input file
+        base_name = Path(input_path).stem
+        dot_file = f"search_graph_{algorithm_name}_{base_name}.dot"
+        png_file = f"search_graph_{algorithm_name}_{base_name}.png"
+
+        # Write DOT file
+        dot_text = graph.to_dot()
+        write_text(dot_file, dot_text)
+        print(f"📊 Exported search graph DOT: {dot_file}")
+
+        # Try to render PNG
+        try:
+            if try_render_graphviz(dot_file, png_file):
+                print(f"📊 Exported search graph PNG: {png_file}")
+            else:
+                print(f"⚠️ Graphviz not available, DOT file saved but PNG not generated")
+        except Exception as e:
+            print(f"⚠️ Could not render PNG: {e}")
+
+    except Exception as e:
+        print(f"⚠️ Could not export search graph: {e}")
+
+
+def solve_from_json(input_path: str, output_path: str, compare_all: bool = True, auto_html: bool = True, record_graph: bool = True):
     from timetable_io import load_input_json, export_output_json
     import os
 
@@ -980,8 +1016,10 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True,
         results: List[SearchResult] = []
 
         # DFS
-        result_dfs = dfs_search(problem, verbose=True)
+        result_dfs = dfs_search(problem, verbose=True, record_graph=record_graph, algorithm_label="DFS")
         results.append(result_dfs)
+        if record_graph and hasattr(result_dfs, 'graph'):
+            _export_search_graph(result_dfs.graph, "dfs", input_path)
 
         # BFS
         result_bfs = bfs_search(problem, verbose=True)
@@ -1040,7 +1078,7 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True,
         strategy = str(config.get("strategy", "dfs")).lower()
 
         if strategy == "dfs":
-            result = dfs_search(problem, verbose=True)
+            result = dfs_search(problem, verbose=True, record_graph=record_graph, algorithm_label="DFS")
         elif strategy == "bfs":
             result = bfs_search(problem, verbose=True)
         elif strategy == "ucs":
@@ -1050,6 +1088,10 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True,
             strategy = "a_star"
         else:
             raise ValueError(f"Unknown strategy '{strategy}'. Use one of: dfs, bfs, ucs, astar")
+
+        # Export graph if recording was enabled
+        if record_graph and hasattr(result, 'graph'):
+            _export_search_graph(result.graph, strategy, input_path)
 
         if result.path is None:
             print("❌ No feasible schedule found.")
@@ -1085,7 +1127,7 @@ def solve_from_json(input_path: str, output_path: str, compare_all: bool = True,
 def solve_from_json_advanced(input_path: str, output_path: str,
                            compare_all: bool = True, auto_html: bool = True,
                            enable_validation: bool = True, enable_backup: bool = True,
-                           export_formats: List[str] = None):
+                           export_formats: List[str] = None, record_graph: bool = True):
     """
     Enhanced solve function with advanced features:
     - Conflict detection and analysis
@@ -1134,8 +1176,10 @@ def solve_from_json_advanced(input_path: str, output_path: str,
         results: List[SearchResult] = []
 
         # Run all algorithms
-        result_dfs = dfs_search(problem, verbose=True)
+        result_dfs = dfs_search(problem, verbose=True, record_graph=record_graph, algorithm_label="DFS")
         results.append(result_dfs)
+        if record_graph and hasattr(result_dfs, 'graph'):
+            _export_search_graph(result_dfs.graph, "dfs", input_path)
 
         result_bfs = bfs_search(problem, verbose=True)
         results.append(result_bfs)
@@ -1194,7 +1238,7 @@ def solve_from_json_advanced(input_path: str, output_path: str,
         strategy = str(config.get("strategy", "dfs")).lower()
 
         if strategy == "dfs":
-            result = dfs_search(problem, verbose=True)
+            result = dfs_search(problem, verbose=True, record_graph=record_graph, algorithm_label="DFS")
         elif strategy == "bfs":
             result = bfs_search(problem, verbose=True)
         elif strategy == "ucs":
@@ -1204,6 +1248,10 @@ def solve_from_json_advanced(input_path: str, output_path: str,
             strategy = "a_star"
         else:
             raise ValueError(f"Unknown strategy '{strategy}'. Use one of: dfs, bfs, ucs, astar")
+
+        # Export graph if recording was enabled
+        if record_graph and hasattr(result, 'graph'):
+            _export_search_graph(result.graph, strategy, input_path)
 
         if result.path is None:
             print("❌ No feasible schedule found.")
