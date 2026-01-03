@@ -1,0 +1,998 @@
+{
+  "config": {
+    "week_name": "University-Fall-2025",
+    "weeks_total": 16,
+    "use_mrv": false
+  },
+  "timeslots": [
+    {
+      "id": "Mon_08-10",
+      "day": "Mon",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_10-12",
+      "day": "Mon",
+      "start": "10:00",
+      "end": "12:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_14-16",
+      "day": "Mon",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Mon_16-18",
+      "day": "Mon",
+      "start": "16:00",
+      "end": "18:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_08-10",
+      "day": "Tue",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_10-12",
+      "day": "Tue",
+      "start": "10:00",
+      "end": "12:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_14-16",
+      "day": "Tue",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Tue_16-18",
+      "day": "Tue",
+      "start": "16:00",
+      "end": "18:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_08-10",
+      "day": "Wed",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_10-12",
+      "day": "Wed",
+      "start": "10:00",
+      "end": "12:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_14-16",
+      "day": "Wed",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Wed_16-18",
+      "day": "Wed",
+      "start": "16:00",
+      "end": "18:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_08-10",
+      "day": "Thu",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_10-12",
+      "day": "Thu",
+      "start": "10:00",
+      "end": "12:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_14-16",
+      "day": "Thu",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Thu_16-18",
+      "day": "Thu",
+      "start": "16:00",
+      "end": "18:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_08-10",
+      "day": "Fri",
+      "start": "08:00",
+      "end": "10:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_10-12",
+      "day": "Fri",
+      "start": "10:00",
+      "end": "12:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_14-16",
+      "day": "Fri",
+      "start": "14:00",
+      "end": "16:00",
+      "duration_min": 120
+    },
+    {
+      "id": "Fri_16-18",
+      "day": "Fri",
+      "start": "16:00",
+      "end": "18:00",
+      "duration_min": 120
+    }
+  ],
+  "rooms": [
+    {
+      "id": "AMPHIA",
+      "capacity": 150,
+      "available": ["ALL"]
+    },
+    {
+      "id": "AMPHIB",
+      "capacity": 120,
+      "available": ["ALL"]
+    },
+    {
+      "id": "AMPHIC",
+      "capacity": 100,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_101",
+      "capacity": 50,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_102",
+      "capacity": 50,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_103",
+      "capacity": 45,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_201",
+      "capacity": 40,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_202",
+      "capacity": 40,
+      "available": ["ALL"]
+    },
+    {
+      "id": "ROOM_203",
+      "capacity": 35,
+      "available": ["ALL"]
+    },
+    {
+      "id": "LAB_CS1",
+      "capacity": 30,
+      "available": ["ALL"]
+    },
+    {
+      "id": "LAB_CS2",
+      "capacity": 30,
+      "available": ["ALL"]
+    },
+    {
+      "id": "LAB_ENG1",
+      "capacity": 25,
+      "available": ["ALL"]
+    },
+    {
+      "id": "LAB_ENG2",
+      "capacity": 25,
+      "available": ["ALL"]
+    },
+    {
+      "id": "LAB_PHY",
+      "capacity": 30,
+      "available": ["ALL"]
+    }
+  ],
+  "teachers": [
+    {
+      "id": "JOHNSON",
+      "available": ["ALL"]
+    },
+    {
+      "id": "CHEN",
+      "available": ["ALL"]
+    },
+    {
+      "id": "RODRIGUEZ",
+      "available": ["ALL"]
+    },
+    {
+      "id": "KIM",
+      "available": ["ALL"]
+    },
+    {
+      "id": "ANDERSON",
+      "available": ["ALL"]
+    },
+    {
+      "id": "BROWN",
+      "available": ["ALL"]
+    },
+    {
+      "id": "WHITE",
+      "available": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12", "Wed_08-10"]
+    },
+    {
+      "id": "MARTINEZ",
+      "available": ["ALL"]
+    },
+    {
+      "id": "GARCIA",
+      "available": ["Mon_14-16", "Tue_14-16", "Wed_14-16", "Thu_14-16", "Fri_14-16"]
+    },
+    {
+      "id": "WILSON",
+      "available": ["ALL"]
+    },
+    {
+      "id": "LOPEZ",
+      "available": ["Wed_08-10", "Wed_10-12", "Thu_08-10", "Thu_10-12"]
+    },
+    {
+      "id": "TAYLOR",
+      "available": ["ALL"]
+    },
+    {
+      "id": "THOMAS",
+      "available": ["ALL"]
+    },
+    {
+      "id": "MOORE",
+      "available": ["ALL"]
+    },
+    {
+      "id": "JACKSON",
+      "available": ["ALL"]
+    },
+    {
+      "id": "LEE",
+      "available": ["ALL"]
+    },
+    {
+      "id": "HARRIS",
+      "available": ["ALL"]
+    },
+    {
+      "id": "CLARK",
+      "available": ["ALL"]
+    },
+    {
+      "id": "LEWIS",
+      "available": ["ALL"]
+    },
+    {
+      "id": "YOUNG",
+      "available": ["Mon_08-10", "Mon_10-12", "Wed_08-10", "Wed_10-12"]
+    },
+    {
+      "id": "WALKER",
+      "available": ["ALL"]
+    },
+    {
+      "id": "HALL",
+      "available": ["Tue_14-16", "Tue_16-18", "Thu_14-16", "Thu_16-18"]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "CS_YEAR1",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "CS_Y1",
+          "size": 45,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Introduction to Programming",
+          "min_room_capacity": 45,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "JOHNSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Lab",
+              "teacher_id": "BROWN",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Calculus I",
+          "min_room_capacity": 45,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "HARRIS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "HARRIS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Linear Algebra",
+          "min_room_capacity": 45,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "CLARK",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "CLARK",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Physics I",
+          "min_room_capacity": 45,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "WALKER",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "WALKER",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "English Communication",
+          "min_room_capacity": 45,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "YOUNG",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_08-10", "Mon_10-12", "Wed_08-10", "Wed_10-12"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CS_YEAR2",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "CS_Y2",
+          "size": 38,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Data Structures",
+          "min_room_capacity": 38,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "CHEN",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Lab",
+              "teacher_id": "BROWN",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Algorithms",
+          "min_room_capacity": 38,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "RODRIGUEZ",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "RODRIGUEZ",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CS_YEAR3",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "CS_Y3",
+          "size": 32,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Database Systems",
+          "min_room_capacity": 32,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "KIM",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "KIM",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Software Engineering",
+          "min_room_capacity": 32,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "ANDERSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "ANDERSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BUS_YEAR1",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "BUS_Y1",
+          "size": 50,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Introduction to Business",
+          "min_room_capacity": 50,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "WHITE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12", "Wed_08-10"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "WHITE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_08-10", "Mon_10-12", "Tue_08-10", "Tue_10-12", "Wed_08-10"]
+            }
+          ]
+        },
+        {
+          "id": "Financial Accounting",
+          "min_room_capacity": 50,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "MARTINEZ",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "MARTINEZ",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BUS_YEAR2",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "BUS_Y2",
+          "size": 42,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Marketing Management",
+          "min_room_capacity": 42,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "GARCIA",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_14-16", "Tue_14-16", "Wed_14-16", "Thu_14-16", "Fri_14-16"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "GARCIA",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Mon_14-16", "Tue_14-16", "Wed_14-16", "Thu_14-16", "Fri_14-16"]
+            }
+          ]
+        },
+        {
+          "id": "Strategic Management",
+          "min_room_capacity": 42,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "WILSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "WILSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Business Case Studies",
+          "min_room_capacity": 42,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Workshop",
+              "teacher_id": "LOPEZ",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Wed_08-10", "Wed_10-12", "Thu_08-10", "Thu_10-12"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ENG_YEAR1",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "ENG_Y1",
+          "size": 40,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Engineering Mechanics",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "TAYLOR",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "TAYLOR",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Circuit Analysis",
+          "min_room_capacity": 40,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "THOMAS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "THOMAS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Engineering Lab I",
+          "min_room_capacity": 25,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lab",
+              "teacher_id": "LEE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Physics Lab",
+          "min_room_capacity": 30,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lab",
+              "teacher_id": "HALL",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["Tue_14-16", "Tue_16-18", "Thu_14-16", "Thu_16-18"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ENG_YEAR2",
+      "weeks_total": 16,
+      "groups": [
+        {
+          "id": "ENG_Y2",
+          "size": 35,
+          "available": ["ALL"]
+        }
+      ],
+      "modules": [
+        {
+          "id": "Thermodynamics",
+          "min_room_capacity": 35,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "MOORE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "MOORE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Control Systems",
+          "min_room_capacity": 35,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "JACKSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "JACKSON",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Differential Equations",
+          "min_room_capacity": 35,
+          "hours_per_week": 4,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lecture",
+              "teacher_id": "LEWIS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            },
+            {
+              "id": "Tutorial",
+              "teacher_id": "LEWIS",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        },
+        {
+          "id": "Engineering Lab II",
+          "min_room_capacity": 25,
+          "hours_per_week": 2,
+          "weeks": {
+            "mode": "ranges",
+            "values": ["1-16"]
+          },
+          "events": [
+            {
+              "id": "Lab",
+              "teacher_id": "LEE",
+              "audience": {
+                "type": "all_groups"
+              },
+              "duration_min": 120,
+              "allowed_slots": ["ALL"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

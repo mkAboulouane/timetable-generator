@@ -1437,7 +1437,7 @@ except ImportError as e:
 
 
 if __name__ == "__main__":
-    input_path = "test/09_real_world_scenario.json"
+    input_path = "test/test_university_scenario.json"
     output_path = "timetable_output.json"
     # Enable advanced features for testing
     if ADVANCED_FEATURES:
