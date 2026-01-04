@@ -1,40 +1,6 @@
 Event,Module,Teacher,Groups,Day,Start Time,End Time,Room,Duration (hours),Weeks,Students,Room Capacity,Session,Module Hours/Week,Required Capacity
-Algorithms - Lecture,Algorithms,RODRIGUEZ,CS_Y2,Wed,14,16,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",38,40,CS_YEAR2,4.0,38
-Algorithms - Tutorial,Algorithms,RODRIGUEZ,CS_Y2,Wed,08,10,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",38,40,CS_YEAR2,4.0,38
-Business Case Studies - Workshop,Business Case Studies,LOPEZ,BUS_Y2,Wed,08,10,ROOM_101,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",42,50,BUS_YEAR2,2.0,42
-Calculus I - Lecture,Calculus I,HARRIS,CS_Y1,Wed,10,12,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Calculus I - Tutorial,Calculus I,HARRIS,CS_Y1,Wed,08,10,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Circuit Analysis - Lecture,Circuit Analysis,THOMAS,ENG_Y1,Wed,10,12,ROOM_201,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,4.0,40
-Circuit Analysis - Tutorial,Circuit Analysis,THOMAS,ENG_Y1,Wed,08,10,ROOM_201,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,4.0,40
-Control Systems - Lecture,Control Systems,JACKSON,ENG_Y2,Wed,10,12,ROOM_101,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,50,ENG_YEAR2,4.0,35
-Control Systems - Tutorial,Control Systems,JACKSON,ENG_Y2,Wed,08,10,AMPHIC,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,100,ENG_YEAR2,4.0,35
-Data Structures - Lab,Data Structures,BROWN,CS_Y2,Wed,10,12,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",38,40,CS_YEAR2,4.0,38
-Data Structures - Lecture,Data Structures,CHEN,CS_Y2,Wed,16,18,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",38,40,CS_YEAR2,4.0,38
-Database Systems - Lecture,Database Systems,KIM,CS_Y3,Wed,16,18,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",32,35,CS_YEAR3,4.0,32
-Database Systems - Tutorial,Database Systems,KIM,CS_Y3,Wed,14,16,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",32,35,CS_YEAR3,4.0,32
-Differential Equations - Lecture,Differential Equations,LEWIS,ENG_Y2,Tue,16,18,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,35,ENG_YEAR2,4.0,35
-Differential Equations - Tutorial,Differential Equations,LEWIS,ENG_Y2,Tue,14,16,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,35,ENG_YEAR2,4.0,35
-Engineering Lab I - Lab,Engineering Lab I,LEE,ENG_Y1,Tue,16,18,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,2.0,40
-Engineering Lab II - Lab,Engineering Lab II,LEE,ENG_Y2,Tue,10,12,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,35,ENG_YEAR2,2.0,35
-Engineering Mechanics - Lecture,Engineering Mechanics,TAYLOR,ENG_Y1,Wed,16,18,ROOM_201,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,4.0,40
-Engineering Mechanics - Tutorial,Engineering Mechanics,TAYLOR,ENG_Y1,Wed,14,16,ROOM_201,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,4.0,40
-English Communication - Lecture,English Communication,YOUNG,CS_Y1,Mon,10,12,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,2.0,45
-Financial Accounting - Lecture,Financial Accounting,MARTINEZ,BUS_Y1,Wed,16,18,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",50,50,BUS_YEAR1,4.0,50
-Financial Accounting - Tutorial,Financial Accounting,MARTINEZ,BUS_Y1,Wed,14,16,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",50,50,BUS_YEAR1,4.0,50
-Introduction to Business - Lecture,Introduction to Business,WHITE,BUS_Y1,Wed,08,10,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",50,50,BUS_YEAR1,4.0,50
-Introduction to Business - Tutorial,Introduction to Business,WHITE,BUS_Y1,Tue,10,12,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",50,50,BUS_YEAR1,4.0,50
-Introduction to Programming - Lab,Introduction to Programming,BROWN,CS_Y1,Wed,14,16,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Introduction to Programming - Lecture,Introduction to Programming,JOHNSON,CS_Y1,Wed,16,18,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Linear Algebra - Lecture,Linear Algebra,CLARK,CS_Y1,Tue,16,18,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Linear Algebra - Tutorial,Linear Algebra,CLARK,CS_Y1,Tue,14,16,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Marketing Management - Lecture,Marketing Management,GARCIA,BUS_Y2,Wed,14,16,ROOM_101,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",42,50,BUS_YEAR2,4.0,42
-Marketing Management - Tutorial,Marketing Management,GARCIA,BUS_Y2,Tue,14,16,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",42,50,BUS_YEAR2,4.0,42
-Physics I - Lecture,Physics I,WALKER,CS_Y1,Tue,10,12,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Physics I - Tutorial,Physics I,WALKER,CS_Y1,Tue,08,10,ROOM_103,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",45,45,CS_YEAR1,4.0,45
-Physics Lab - Lab,Physics Lab,HALL,ENG_Y1,Tue,14,16,ROOM_202,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",40,40,ENG_YEAR1,2.0,40
-Software Engineering - Lecture,Software Engineering,ANDERSON,CS_Y3,Wed,10,12,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",32,35,CS_YEAR3,4.0,32
-Software Engineering - Tutorial,Software Engineering,ANDERSON,CS_Y3,Wed,08,10,ROOM_203,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",32,35,CS_YEAR3,4.0,32
-Strategic Management - Lecture,Strategic Management,WILSON,BUS_Y2,Wed,16,18,ROOM_101,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",42,50,BUS_YEAR2,4.0,42
-Strategic Management - Tutorial,Strategic Management,WILSON,BUS_Y2,Wed,10,12,ROOM_102,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",42,50,BUS_YEAR2,4.0,42
-Thermodynamics - Lecture,Thermodynamics,MOORE,ENG_Y2,Wed,16,18,AMPHIC,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,100,ENG_YEAR2,4.0,35
-Thermodynamics - Tutorial,Thermodynamics,MOORE,ENG_Y2,Wed,14,16,AMPHIC,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",35,100,ENG_YEAR2,4.0,35
+ALGO1 - CP_TD_ALGO_G1,ALGO1,T_ALGO,CP_G1,Tue,10,1230,R2,2.0,"1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14",28,80,CP-1-S1,4.0,30
+ALGO1 - CP_TD_ALGO_G2,ALGO1,T_ALGO,CP_G2,Mon,10,1230,R2,2.0,"1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14",27,80,CP-1-S1,4.0,30
+MATH1 - CP_CM_MATH1,MATH1,T_MATH,"CP_G1, CP_G2",Tue,08,10,R2,2.0,"1, 3, 5, 7, 10, 16",55,80,CP-1-S1,2.0,60
+MATH_GI - GI_CM_MATH,MATH_GI,T_MATH,GI_G1,Tue,10,1230,R1,2.0,"9, 10, 11, 12, 13, 14, 15, 16",34,35,GI-S1,2.0,34
+NET1 - GI_CM_NET1,NET1,T_NET,GI_G1,Tue,08,10,R1,2.0,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16",34,35,GI-S1,2.0,34

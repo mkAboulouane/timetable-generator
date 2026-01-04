@@ -1485,7 +1485,7 @@ except ImportError as e:
 
 
 if __name__ == "__main__":
-    input_path = "test/test_university_scenario.json"
+    input_path = "test/06_medium_two_sessions_success.json"
     output_path = "timetable_output.json"
     # Enable advanced features for testing
     if ADVANCED_FEATURES:
@@ -1496,7 +1496,7 @@ if __name__ == "__main__":
             compare_all=True,
             enable_validation=True,
             enable_backup=True,
-            export_formats=['csv', 'ical', 'stats']
+            export_formats=['csv', 'stats']
         )
     else:
         print("📝 Running with BASIC FEATURES only")
